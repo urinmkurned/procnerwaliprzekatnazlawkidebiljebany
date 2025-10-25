@@ -32,13 +32,20 @@
         </div>
     </div>
 
-    <div class="upload">
+   <div class="input_holder">
+        <div class="input-wrapper">
+            <input type="text" id="image" class="input" placeholder="">
+            <img src="assets/images/unnamed.png" class="upload-icon" onclick="document.getElementById('file-upload').click()">
+        </div>
+        <span class="placeholder">Link do zdjęcia (imgur)</span>
         <p class="error">To pole jest wymagane</p>
-        <img class="upload_uploaded">
-        <div class="upload_uploading"></div>
-        <div class="upload_grid">
-            <img class="upload_image" src="https://i.imgur.com/vwIQErh.png">
-            <p class="upload_text">Dodaj zdjęcie</p>
+        <input type="file" id="file-upload" accept="image/*" style="display: none">
+    </div>
+
+    <div class="image-preview-modal">
+        <div class="image-preview-content">
+            <button class="close-preview">×</button>
+            <img class="preview-image" src="" alt="Podgląd">
         </div>
     </div>
 
@@ -132,4 +139,5 @@
 
     <script src="assets/index.js"></script>
 </body>
+
 
