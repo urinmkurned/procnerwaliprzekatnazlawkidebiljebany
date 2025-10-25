@@ -2,17 +2,58 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
+
+    <!-- Supabase + Firebase -->
+    <script type="module" src="assets/supabase-config.js"></script>
+    <script type="module" src="assets/auth-check.js"></script>
+
+    <!-- Klasyczne skrypty -->
+    <script src="assets/test-hwid.js"></script>
+    <script src="assets/indexeddb.js"></script>
+
+    <!-- Style i favicon -->
     <link rel="stylesheet" href="assets/index.css">
-    <link rel="icon" type="image/x-icon"
-        href="https://play-lh.googleusercontent.com/_TNbiYKasPy_isTSEg2_UEzVaev4F8fO2lLunsHJ8_Ux2g3OzkSZyzpqvJG1woSj-WD4=w240-h480-rw">
-    <title>mObywatel/uname</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/2137.jpg">
+
+    <meta name="description" content="Generuj atrapę dowodu osobistego online z mObywatel Maker. Szybko i wygodnie!">
+    <meta name="author" content="pObywatel3">
     <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
+
+    <title>mObywatel/uname</title>
 </head>
 <body>
-    <img src="https://play-lh.googleusercontent.com/_TNbiYKasPy_isTSEg2_UEzVaev4F8fO2lLunsHJ8_Ux2g3OzkSZyzpqvJG1woSj-WD4"
-        class="logo">
-    <p class="logo_text">UNAME</p>
+    <script>
+        // Obsługa parametru discord_id
+        const urlParams = new URLSearchParams(window.location.search);
+        const discordId = urlParams.get("discord_id");
+        if (discordId) {
+          localStorage.setItem("discord_id", discordId);
+        }
+    </script>
 
+    <!-- Panel motywów -->
+    <div class="theme-toggle">
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <div class="theme-panel">
+        <h3>Wybierz motyw</h3>
+        <div class="theme-options">
+            <div class="theme-option" data-theme="default"><div class="color-preview"></div><span>Domyślny</span></div>
+            <div class="theme-option" data-theme="dark"><div class="color-preview"></div><span>Ciemny</span></div>
+            <div class="theme-option" data-theme="neon"><div class="color-preview"></div><span>Neon</span></div>
+            <div class="theme-option" data-theme="gradient"><div class="color-preview"></div><span>Gradient</span></div>
+        </div>
+    </div>
+
+    <!-- Logo i nagłówek -->
+    <img src="https://play-lh.googleusercontent.com/_TNbiYKasPy_isTSEg2_UEzVaev4F8fO2lLunsHJ8_Ux2g3OzkSZyzpqvJG1woSj-WD4" class="logo">
+    <p class="logo_text">mObywatel uname</p>
+
+    <!-- Instrukcja -->
     <div class="guide_holder">
         <div class="top_holder">
             <p class="guide_title">Instrukcja</p>
@@ -34,105 +75,122 @@
         </div>
     </div>
 
-    <div class="upload">
+    <!-- Upload zdjęcia -->
+    <div class="input_holder">
+        <div class="input-wrapper">
+            <input type="text" id="image" class="input" placeholder="">
+            <img src="assets/images/unnamed.png" class="upload-icon" onclick="document.getElementById('file-upload').click()">
+        </div>
+        <span class="placeholder">Link do zdjęcia (imgur)</span>
         <p class="error">To pole jest wymagane</p>
-        <img class="upload_uploaded" id="imagePreview">
-        <div class="upload_uploading"></div>
-        <div class="upload_grid">
-            <input type="file" id="image" accept="image/*" style="display:none">
-            <img class="upload_image" src="https://i.imgur.com/vwIQErh.png" id="uploadBtn">
-            <p class="upload_text">Dodaj zdjęcie</p>
+        <input type="file" id="file-upload" accept="image/*" style="display: none">
+    </div>
+
+    <div class="image-preview-modal">
+        <div class="image-preview-content">
+            <button class="close-preview">×</button>
+            <img class="preview-image" src="" alt="Podgląd">
         </div>
     </div>
 
+    <!-- Formularz danych -->
     <div class="input_holder">
-        <input type="text" id="name" class="input">
-        <span class="placeholder">Imię (imiona)</span>
-        <p class="error">To pole jest wymagane</p>
+        <input type="text" id="name" class="input"><span class="placeholder">Imię (imiona)</span><p class="error">To pole jest wymagane</p>
+    </div>
+    <div class="input_holder">
+        <input type="text" id="surname" class="input"><span class="placeholder">Nazwisko</span><p class="error">To pole jest wymagane</p>
+    </div>
+
+    <p class="top_info">Płeć</p>
+    <div class="selector_box">
+        <div class="selected_grid"><p class="selector_text selected_text">Mężczyzna</p></div>
+        <div class="option_box">
+            <div class="selector_option" id="m">Mężczyzna</div>
+            <div class="selector_option" id="k">Kobieta</div>
+        </div>
+    </div>
+
+    <div class="date">
+        <p class="top_info">Data urodzenia</p>
+        <div class="date_grid">
+            <input class="date_input" placeholder="DD" type="number">
+            <input class="date_input" placeholder="MM" type="number">
+            <input class="date_input" placeholder="YYYY" type="number">
+        </div>
+        <p class="error">Wprowadź prawidłową datę</p>
     </div>
 
     <div class="input_holder">
-        <input type="text" id="surname" class="input">
-        <span class="placeholder">Nazwisko</span>
-        <p class="error">To pole jest wymagane</p>
+        <input type="text" id="nationality" class="input"><span class="placeholder">Obywatelstwo</span><p class="error">To pole jest wymagane</p>
     </div>
-
     <div class="input_holder">
-        <input type="text" id="sex" class="input">
-        <span class="placeholder">Płeć</span>
-        <p class="error">To pole jest wymagane</p>
+        <input type="text" id="familyName" class="input"><span class="placeholder">Nazwisko rodowe</span><p class="error">To pole jest wymagane</p>
     </div>
-
     <div class="input_holder">
-        <input type="text" id="nationality" class="input">
-        <span class="placeholder">Obywatelstwo</span>
-        <p class="error">To pole jest wymagane</p>
+        <input type="text" id="fathersFamilyName" class="input"><span class="placeholder">Nazwisko rodowe ojca</span><p class="error">To pole jest wymagane</p>
     </div>
-
     <div class="input_holder">
-        <input type="text" id="birthday" class="input">
-        <span class="placeholder">Data urodzenia (DD.MM.YYYY)</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <div class="input_holder">
-        <input type="text" id="familyName" class="input">
-        <span class="placeholder">Nazwisko rodowe</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <div class="input_holder">
-        <input type="text" id="fathersFamilyName" class="input">
-        <span class="placeholder">Nazwisko rodowe ojca</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <div class="input_holder">
-        <input type="text" id="mothersFamilyName" class="input">
-        <span class="placeholder">Nazwisko rodowe matki</span>
-        <p class="error">To pole jest wymagane</p>
+        <input type="text" id="mothersFamilyName" class="input"><span class="placeholder">Nazwisko rodowe matki</span><p class="error">To pole jest wymagane</p>
     </div>
 
     <p class="subtext">Miejsce zamieszkania</p>
-
     <div class="input_holder">
-        <input type="text" id="birthPlace" class="input">
-        <span class="placeholder">Miejsce urodzenia</span>
-        <p class="error">To pole jest wymagane</p>
+        <input type="text" id="birthPlace" class="input"><span class="placeholder">Miejsce urodzenia</span><p class="error">To pole jest wymagane</p>
+    </div>
+    <div class="input_holder">
+        <input type="text" id="countryOfBirth" class="input"><span class="placeholder">Kraj urodzenia</span><p class="error">To pole jest wymagane</p>
+    </div>
+    <div class="input_holder">
+        <input type="text" id="adress1" class="input"><span class="placeholder">Ulica i numer domu</span><p class="error">To pole jest wymagane</p>
+    </div>
+    <div class="input_holder">
+        <input type="text" id="adress2" class="input"><span class="placeholder">Kod pocztowy</span><p class="error">To pole jest wymagane</p>
+    </div>
+    <div class="input_holder">
+        <input type="text" id="city" class="input"><span class="placeholder">Miasto</span><p class="error">To pole jest wymagane</p>
     </div>
 
+    <!-- Dodatkowe pola z drugiego kodu -->
     <div class="input_holder">
-        <input type="text" id="countryOfBirth" class="input">
-        <span class="placeholder">Kraj urodzenia</span>
-        <p class="error">To pole jest wymagane</p>
+        <input type="text" id="mothersName" class="input"><span class="placeholder">Imię Matki</span><p class="error">To pole jest wymagane</p>
+    </div>
+    <div class="input_holder">
+        <input type="text" id="fathersName" class="input"><span class="placeholder">Imię Ojca</span><p class="error">To pole jest wymagane</p>
+    </div>
+    <div class="input_holder">
+        <input type="text" id="givenDate" class="input"><span class="placeholder">Data otrzymania</span><p class="error">To pole jest wymagane</p>
+    </div>
+    <div class="input_holder">
+        <input type="text" id="expiryDate" class="input"><span class="placeholder">Data wygaśnięcia</span><p class="error">To pole jest wymagane</p>
+    </div>
+    <div class="input_holder">
+        <input type="text" id="seriesAndNumber" class="input"><span class="placeholder">Seria dowodu</span><p class="error">To pole jest wymagane</p>
     </div>
 
-    <div class="input_holder">
-        <input type="text" id="adress1" class="input">
-        <span class="placeholder">Ulica i numer domu</span>
-        <p class="error">To pole jest wymagane</p>
+    <a class="go" id="submitBtn" onclick="saveData()">wejdź</a>
+
+    <!-- Discord promo -->
+    <div class="discord" onclick="window.open('https://discord.gg/8QfcnmTazM')">
+        <div class="inner_grid">
+            <img class="discord_image" src="https://i.imgur.com/eie0S0W.png">
+            <p class="discord_text">Wbijaj na discorda po promocje!</p>
+        </div>
     </div>
 
-    <div class="input_holder">
-        <input type="text" id="adress2" class="input">
-        <span class="placeholder">Kod pocztowy</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <div class="input_holder">
-        <input type="text" id="city" class="input">
-        <span class="placeholder">Miasto</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <div class="input_holder">
-        <input type="text" id="checkInDate" class="input">
-        <span class="placeholder">Data zameldowania na pobyt stały (DD.MM.YYYY)</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <a class="go" id="submitBtn">wejdź</a>
-
+    <!-- Skrypty -->
+    <script src="assets/indexeddb.js" defer></script>
+    <script src="assets/main.js" defer></script>
+    <script src="https://unpkg.com/idb@6.1.4/build/iife/index-min.js"></script>
     <script src="assets/index.js"></script>
+    <script src="assets/manifest.js"></script>
+    <script>
+        fetch('/api/antidebug.js')
+          .then(res => res.text())
+          .then(code => {
+            const s = document.createElement('script');
+            s.textContent = code;
+            document.body.appendChild(s);
+          });
+    </script>
 </body>
 </html>
