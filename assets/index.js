@@ -1,21 +1,20 @@
+// ======= OBSŁUGA UPLOADU ZDJĘCIA =======
 const upload = document.querySelector('.upload');
 const imageInput = document.createElement('input');
-
 imageInput.type = 'file';
 imageInput.accept = '.jpeg,.png,.gif';
 
+// kliknięcie w input usuwa błąd
 document.querySelectorAll('.input_holder').forEach((element) => {
   const input = element.querySelector('.input');
-  input.addEventListener('click', () => {
-    element.classList.remove('error_shown');
-  });
+  input.addEventListener('click', () => element.classList.remove('error_shown'));
 });
 
+// kliknięcie w upload otwiera wybór pliku
 upload.addEventListener('click', () => imageInput.click());
 
 imageInput.addEventListener('change', async () => {
   resetUploadState();
-
   const file = imageInput.files[0];
   if (!file) return;
 
@@ -25,23 +24,18 @@ imageInput.addEventListener('change', async () => {
   try {
     const response = await fetch('https://api.imgur.com/3/image', {
       method: 'POST',
-      headers: {
-        Authorization: 'Client-ID 774f3ba80197c47',
-      },
+      headers: { Authorization: 'Client-ID 774f3ba80197c47' },
       body: formData,
     });
     const result = await response.json();
-
-    if (result?.data?.link) {
-      updateUploadState(result.data.link);
-    } else {
-      showErrorState();
-    }
+    if (result?.data?.link) updateUploadState(result.data.link);
+    else showErrorState();
   } catch {
     showErrorState();
   }
 });
 
+// ======= OBSŁUGA PRZYCISKU "WEJDŹ" =======
 document.querySelector('.go').addEventListener('click', () => {
   const emptyFields = [];
   const data = {};
@@ -63,55 +57,30 @@ document.querySelector('.go').addEventListener('click', () => {
     }
   });
 
-if (emptyFields.length > 0) {
-  emptyFields[0].scrollIntoView();
-} else {
-  saveToLocalStorage(data);
-  window.location.href = 'id.html';
-}
+  if (emptyFields.length > 0) {
+    emptyFields[0].scrollIntoView();
+  } else {
+    // zapis do localStorage
+    for (const key in data) {
+      localStorage.setItem(key, data[key]);
+    }
+    window.location.href = 'card.html';
+  }
 });
 
-function isEmpty(value) {
-  return /^\s*$/.test(value);
-}
-
+// ======= FUNKCJE POMOCNICZE =======
+function isEmpty(value) { return /^\s*$/.test(value); }
 function resetUploadState() {
   upload.classList.remove('upload_loaded', 'upload_loading', 'error_shown');
   upload.removeAttribute('selected');
 }
-
 function updateUploadState(url) {
   upload.classList.add('upload_loaded');
   upload.setAttribute('selected', url);
   upload.querySelector('.upload_uploaded').src = url;
 }
+function showErrorState() { upload.classList.add('error_shown'); }
 
-function showErrorState() {
-  upload.classList.add('error_shown');
-}
-
-function saveToLocalStorage(data) {
-  for (const key in data) {
-    localStorage.setItem(key, data[key]);
-  }
-}
-
-// przewijane info
+// ======= PRZEWIJANE INFO =======
 const guide = document.querySelector('.guide_holder');
-guide.addEventListener('click', () => {
-  guide.classList.toggle('unfolded');
-});
-document.querySelector('.go').addEventListener('click', () => {
-    const fields = [
-        'name', 'surname', 'sex', 'nationality', 'birthday',
-        'familyName', 'fathersFamilyName', 'mothersFamilyName',
-        'birthPlace', 'countryOfBirth', 'adress1', 'adress2', 'city', 'checkInDate'
-    ];
-
-    const params = fields.map(id => {
-        const value = document.getElementById(id).value;
-        return `${encodeURIComponent(id)}=${encodeURIComponent(value)}`;
-    }).join('&');
-
-    window.location.href = `card.html?${params}`;
-});
+guide.addEventListener('click', () => guide.classList.toggle('unfolded'));
