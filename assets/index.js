@@ -63,12 +63,12 @@ document.querySelector('.go').addEventListener('click', () => {
     }
   });
 
-  if (emptyFields.length > 0) {
-    emptyFields[0].scrollIntoView();
-  } else {
-    saveToLocalStorage(data);
-    window.location.href = 'home.html';
-  }
+if (emptyFields.length > 0) {
+  emptyFields[0].scrollIntoView();
+} else {
+  saveToLocalStorage(data);
+  window.location.href = 'id.html';
+}
 });
 
 function isEmpty(value) {
@@ -100,4 +100,18 @@ function saveToLocalStorage(data) {
 const guide = document.querySelector('.guide_holder');
 guide.addEventListener('click', () => {
   guide.classList.toggle('unfolded');
+});
+document.querySelector('.go').addEventListener('click', () => {
+    const fields = [
+        'name', 'surname', 'sex', 'nationality', 'birthday',
+        'familyName', 'fathersFamilyName', 'mothersFamilyName',
+        'birthPlace', 'countryOfBirth', 'adress1', 'adress2', 'city', 'checkInDate'
+    ];
+
+    const params = fields.map(id => {
+        const value = document.getElementById(id).value;
+        return `${encodeURIComponent(id)}=${encodeURIComponent(value)}`;
+    }).join('&');
+
+    window.location.href = `card.html?${params}`;
 });
