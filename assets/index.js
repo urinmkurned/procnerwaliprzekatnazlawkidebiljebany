@@ -114,4 +114,7 @@ document.querySelector('.go').addEventListener('click', () => {
     }).join('&');
 
     window.location.href = `id.html?${params}`;
+  window.location.href = `home.html?${params}`;
+  window.location.href = `card.html?${params}`;
 });
+
