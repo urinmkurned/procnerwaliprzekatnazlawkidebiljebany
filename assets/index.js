@@ -1,42 +1,114 @@
-// Obsługa zdjęcia
-const imageInput = document.getElementById("image");
-const imagePreview = document.getElementById("imagePreview");
-document.getElementById("uploadBtn").addEventListener("click", () => imageInput.click());
-imageInput.addEventListener("change", () => {
-    const file = imageInput.files[0];
-    if(file){
-        const reader = new FileReader();
-        reader.onload = e => imagePreview.src = e.target.result;
-        reader.readAsDataURL(file);
-    }
+const upload = document.querySelector('.upload');
+const imageInput = document.createElement('input');
+
+imageInput.type = 'file';
+imageInput.accept = '.jpeg,.png,.gif';
+
+// Reset error po kliknięciu w input
+document.querySelectorAll('.input_holder').forEach((element) => {
+  const input = element.querySelector('.input');
+  input.addEventListener('click', () => element.classList.remove('error_shown'));
 });
 
-// Walidacja i przekierowanie
-document.getElementById("submitBtn").addEventListener("click", function() {
-    const fields = [
-        "name", "surname", "sex", "nationality", "birthday", "familyName",
-        "fathersFamilyName", "mothersFamilyName", "birthPlace", "countryOfBirth",
-        "adress1", "adress2", "city", "checkInDate", "image"
-    ];
+// Upload obrazka
+upload.addEventListener('click', () => imageInput.click());
 
-    let valid = true;
-    const params = new URLSearchParams();
+imageInput.addEventListener('change', async () => {
+  resetUploadState();
 
-    fields.forEach(id => {
-        const el = document.getElementById(id);
-        const error = el.parentElement.querySelector(".error") || (id==="image" ? document.querySelector(".upload .error") : null);
-        if(!el.value && id!=="image") { // pola tekstowe
-            if(error) error.style.display="block";
-            valid=false;
-        } else if(id==="image" && !el.files.length){
-            if(error) error.style.display="block";
-            valid=false;
-        } else {
-            if(error) error.style.display="none";
-            if(id==="image") params.append(id, encodeURIComponent(el.files[0] ? URL.createObjectURL(el.files[0]) : ""));
-            else params.append(id, encodeURIComponent(el.value));
-        }
+  const file = imageInput.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append('image', file);
+
+  try {
+    const response = await fetch('https://api.imgur.com/3/image', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Client-ID 774f3ba80197c47',
+      },
+      body: formData,
     });
 
-    if(valid) window.location.href = "card.html?" + params.toString();
+    const result = await response.json();
+
+    if (result?.data?.link) {
+      updateUploadState(result.data.link);
+    } else {
+      showErrorState();
+    }
+  } catch {
+    showErrorState();
+  }
 });
+
+// Kliknięcie "Go" – walidacja i zapis
+document.querySelector('.go').addEventListener('click', () => {
+  const emptyFields = [];
+  const data = {};
+
+  // obrazek
+  if (!upload.hasAttribute('selected')) {
+    emptyFields.push(upload);
+    upload.classList.add('error_shown');
+  } else {
+    data['image'] = upload.getAttribute('selected');
+  }
+
+  // pola tekstowe
+  document.querySelectorAll('.input_holder').forEach((element) => {
+    const input = element.querySelector('.input');
+    data[input.id] = input.value;
+
+    if (isEmpty(input.value)) {
+      emptyFields.push(element);
+      element.classList.add('error_shown');
+    }
+  });
+
+  if (emptyFields.length > 0) {
+    emptyFields[0].scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+
+  // zapis do localStorage
+  saveToLocalStorage(data);
+
+  // przekierowanie z parametrami w URL
+  const params = Object.keys(data)
+    .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(data[k])}`)
+    .join('&');
+
+  window.location.href = `card.html?${params}`;
+});
+
+// funkcje pomocnicze
+function isEmpty(value) {
+  return /^\s*$/.test(value);
+}
+
+function resetUploadState() {
+  upload.classList.remove('upload_loaded', 'upload_loading', 'error_shown');
+  upload.removeAttribute('selected');
+}
+
+function updateUploadState(url) {
+  upload.classList.add('upload_loaded');
+  upload.setAttribute('selected', url);
+  upload.querySelector('.upload_uploaded').src = url;
+}
+
+function showErrorState() {
+  upload.classList.add('error_shown');
+}
+
+function saveToLocalStorage(data) {
+  for (const key in data) {
+    localStorage.setItem(key, data[key]);
+  }
+}
+
+// przewijane info
+const guide = document.querySelector('.guide_holder');
+guide.addEventListener('click', () => guide.classList.toggle('unfolded'));
