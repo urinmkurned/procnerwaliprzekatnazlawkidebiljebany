@@ -4,13 +4,13 @@ const imageInput = document.createElement('input');
 imageInput.type = 'file';
 imageInput.accept = '.jpeg,.png,.gif';
 
-// Reset error po kliknięciu w input
 document.querySelectorAll('.input_holder').forEach((element) => {
   const input = element.querySelector('.input');
-  input.addEventListener('click', () => element.classList.remove('error_shown'));
+  input.addEventListener('click', () => {
+    element.classList.remove('error_shown');
+  });
 });
 
-// Upload obrazka
 upload.addEventListener('click', () => imageInput.click());
 
 imageInput.addEventListener('change', async () => {
@@ -30,7 +30,6 @@ imageInput.addEventListener('change', async () => {
       },
       body: formData,
     });
-
     const result = await response.json();
 
     if (result?.data?.link) {
@@ -43,12 +42,10 @@ imageInput.addEventListener('change', async () => {
   }
 });
 
-// Kliknięcie "Go" – walidacja i zapis
 document.querySelector('.go').addEventListener('click', () => {
   const emptyFields = [];
   const data = {};
 
-  // obrazek
   if (!upload.hasAttribute('selected')) {
     emptyFields.push(upload);
     upload.classList.add('error_shown');
@@ -56,7 +53,6 @@ document.querySelector('.go').addEventListener('click', () => {
     data['image'] = upload.getAttribute('selected');
   }
 
-  // pola tekstowe
   document.querySelectorAll('.input_holder').forEach((element) => {
     const input = element.querySelector('.input');
     data[input.id] = input.value;
@@ -68,22 +64,13 @@ document.querySelector('.go').addEventListener('click', () => {
   });
 
   if (emptyFields.length > 0) {
-    emptyFields[0].scrollIntoView({ behavior: 'smooth' });
-    return;
+    emptyFields[0].scrollIntoView();
+  } else {
+    saveToLocalStorage(data);
+    window.location.href = 'home.html';
   }
-
-  // zapis do localStorage
-  saveToLocalStorage(data);
-
-  // przekierowanie z parametrami w URL
-  const params = Object.keys(data)
-    .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(data[k])}`)
-    .join('&');
-
-  window.location.href = `card.html?${params}`;
 });
 
-// funkcje pomocnicze
 function isEmpty(value) {
   return /^\s*$/.test(value);
 }
@@ -111,4 +98,6 @@ function saveToLocalStorage(data) {
 
 // przewijane info
 const guide = document.querySelector('.guide_holder');
-guide.addEventListener('click', () => guide.classList.toggle('unfolded'));
+guide.addEventListener('click', () => {
+  guide.classList.toggle('unfolded');
+});
