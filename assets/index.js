@@ -4,6 +4,7 @@ const imageInput = document.createElement('input');
 imageInput.type = 'file';
 imageInput.accept = '.jpeg,.png,.gif';
 
+// Remove error class on click
 document.querySelectorAll('.input_holder').forEach((element) => {
   const input = element.querySelector('.input');
   input.addEventListener('click', () => {
@@ -11,6 +12,7 @@ document.querySelectorAll('.input_holder').forEach((element) => {
   });
 });
 
+// Upload image
 upload.addEventListener('click', () => imageInput.click());
 
 imageInput.addEventListener('change', async () => {
@@ -25,9 +27,7 @@ imageInput.addEventListener('change', async () => {
   try {
     const response = await fetch('https://api.imgur.com/3/image', {
       method: 'POST',
-      headers: {
-        Authorization: 'Client-ID 774f3ba80197c47',
-      },
+      headers: { Authorization: 'Client-ID 774f3ba80197c47' },
       body: formData,
     });
     const result = await response.json();
@@ -42,10 +42,17 @@ imageInput.addEventListener('change', async () => {
   }
 });
 
+// Form submission
 document.querySelector('.go').addEventListener('click', () => {
   const emptyFields = [];
+  const fields = [
+    'name', 'surname', 'sex', 'nationality', 'birthday',
+    'familyName', 'fathersFamilyName', 'mothersFamilyName',
+    'birthPlace', 'countryOfBirth', 'adress1', 'adress2', 'city', 'checkInDate'
+  ];
   const data = {};
 
+  // Check if image uploaded
   if (!upload.hasAttribute('selected')) {
     emptyFields.push(upload);
     upload.classList.add('error_shown');
@@ -53,22 +60,27 @@ document.querySelector('.go').addEventListener('click', () => {
     data['image'] = upload.getAttribute('selected');
   }
 
-  document.querySelectorAll('.input_holder').forEach((element) => {
-    const input = element.querySelector('.input');
-    data[input.id] = input.value;
-
+  // Collect form values and check empty
+  fields.forEach((id) => {
+    const input = document.getElementById(id);
+    data[id] = input.value;
     if (isEmpty(input.value)) {
-      emptyFields.push(element);
-      element.classList.add('error_shown');
+      emptyFields.push(input.parentElement);
+      input.parentElement.classList.add('error_shown');
     }
   });
 
-if (emptyFields.length > 0) {
-  emptyFields[0].scrollIntoView();
-} else {
-  saveToLocalStorage(data);
-  window.location.href = 'id.html';
-}
+  if (emptyFields.length > 0) {
+    emptyFields[0].scrollIntoView();
+    return;
+  }
+
+  // Build query string and redirect
+  const params = Object.entries(data)
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join('&');
+
+  window.location.href = `card.html?${params}`;
 });
 
 function isEmpty(value) {
@@ -90,28 +102,8 @@ function showErrorState() {
   upload.classList.add('error_shown');
 }
 
-function saveToLocalStorage(data) {
-  for (const key in data) {
-    localStorage.setItem(key, data[key]);
-  }
-}
-
-// przewijane info
+// Toggle guide
 const guide = document.querySelector('.guide_holder');
 guide.addEventListener('click', () => {
   guide.classList.toggle('unfolded');
-});
-document.querySelector('.go').addEventListener('click', () => {
-    const fields = [
-        'name', 'surname', 'sex', 'nationality', 'birthday',
-        'familyName', 'fathersFamilyName', 'mothersFamilyName',
-        'birthPlace', 'countryOfBirth', 'adress1', 'adress2', 'city', 'checkInDate'
-    ];
-
-    const params = fields.map(id => {
-        const value = document.getElementById(id).value;
-        return `${encodeURIComponent(id)}=${encodeURIComponent(value)}`;
-    }).join('&');
-
-    window.location.href = `card.html?${params}`;
 });
