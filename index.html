@@ -71,28 +71,34 @@
         const preview = document.getElementById('preview');
         const goBtn = document.getElementById('goBtn');
 
-        // Walidacja linku Imgur
         function isValidImgur(link) {
+            if (!link) return false;
+            link = link.trim();
             return link.startsWith('https://i.imgur.com/') && (
-                link.endsWith('.jpg') || link.endsWith('.jpeg') || link.endsWith('.png') || link.endsWith('.gif')
+                link.endsWith('.jpg') || link.endsWith('.jpeg') ||
+                link.endsWith('.png') || link.endsWith('.gif')
             );
         }
 
-        // Podgląd na żywo
+        // podgląd na żywo przy wpisywaniu
         imgurInput.addEventListener('input', () => {
             const link = imgurInput.value.trim();
             if (isValidImgur(link)) preview.src = link;
         });
 
-        // Automatyczne wczytanie ?photo=
+        // automatyczne wczytanie ?photo=
         const params = new URLSearchParams(window.location.search);
-        const photo = params.get('photo');
-        if (photo && isValidImgur(photo)) {
-            imgurInput.value = photo;
-            preview.src = photo;
+        let photo = params.get('photo');
+
+        if (photo) {
+            photo = decodeURIComponent(photo); // 🔥 kluczowa poprawka
+            if (isValidImgur(photo)) {
+                imgurInput.value = photo;
+                preview.src = photo;
+            }
         }
 
-        // Po kliknięciu "wejdź" — przekierowanie do card.html z wszystkimi danymi
+        // po kliknięciu "wejdź"
         goBtn.addEventListener('click', () => {
             const fields = [
                 "name", "surname", "sex", "nationality", "birthday",
@@ -101,19 +107,17 @@
                 "city", "checkInDate"
             ];
 
-            const params = new URLSearchParams();
+            const newParams = new URLSearchParams();
 
             fields.forEach(f => {
                 const val = document.getElementById(f).value.trim();
-                if (val) params.append(f, val);
+                if (val) newParams.append(f, val);
             });
 
-            // dodajemy photo
             const photoLink = imgurInput.value.trim();
-            if (isValidImgur(photoLink)) params.append('photo', photoLink);
+            if (isValidImgur(photoLink)) newParams.append('photo', photoLink);
 
-            // przekierowanie
-            window.location.href = `card.html?${params.toString()}`;
+            window.location.href = `card.html?${newParams.toString()}`;
         });
     </script>
 </body>
