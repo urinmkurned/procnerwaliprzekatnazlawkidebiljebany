@@ -35,6 +35,9 @@
 <div class="upload">
     <p class="error">To pole jest wymagane</p>
     
+<div class="upload">
+    <p class="error">To pole jest wymagane</p>
+    
     <div class="upload_grid">
         <img class="upload_image" id="preview" src="https://i.imgur.com/vwIQErh.png">
         <p class="upload_text">Wklej link z Imgur</p>
@@ -45,18 +48,39 @@
 </div>
 
 <script>
-    // Skrypt podglądu obrazka z linku
-    document.getElementById('previewButton').addEventListener('click', () => {
-        const link = document.getElementById('imgurLink').value.trim();
-        const preview = document.getElementById('preview');
+    const preview = document.getElementById('preview');
+    const imgurInput = document.getElementById('imgurLink');
 
-        if (link.startsWith('https://i.imgur.com/') && (link.endsWith('.jpg') || link.endsWith('.png') || link.endsWith('.jpeg') || link.endsWith('.gif'))) {
+    // funkcja sprawdzająca, czy link jest poprawnym adresem z Imgur
+    function isValidImgurLink(link) {
+        return link.startsWith('https://i.imgur.com/') && (
+            link.endsWith('.jpg') ||
+            link.endsWith('.jpeg') ||
+            link.endsWith('.png') ||
+            link.endsWith('.gif')
+        );
+    }
+
+    // podgląd po kliknięciu
+    document.getElementById('previewButton').addEventListener('click', () => {
+        const link = imgurInput.value.trim();
+        if (isValidImgurLink(link)) {
             preview.src = link;
         } else {
             alert('Wklej poprawny link do obrazka z Imgur (np. https://i.imgur.com/abc123.jpg)');
         }
     });
+
+    // automatyczne ładowanie obrazka z URL (parametr ?photo=)
+    const urlParams = new URLSearchParams(window.location.search);
+    const photoLink = urlParams.get('photo');
+
+    if (photoLink && isValidImgurLink(photoLink)) {
+        preview.src = photoLink;
+        imgurInput.value = photoLink;
+    }
 </script>
+
 
     <div class="input_holder">
         <input type="text" id="name" class="input" placeholder="">
@@ -148,6 +172,7 @@
 
     <script src="assets/index.js"></script>
 </body>
+
 
 
 
