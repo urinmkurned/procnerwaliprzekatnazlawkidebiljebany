@@ -32,15 +32,31 @@
         </div>
     </div>
 
-  <div class="upload">
-        <p class="error">To pole jest wymagane</p>
-        <img class="upload_uploaded">
-        <div class="upload_uploading"></div>
-        <div class="upload_grid">
-            <img class="upload_image" src="https://i.imgur.com/vwIQErh.png">
-            <p class="upload_text">Dodaj zdjęcie</p>
-        </div>
+<div class="upload">
+    <p class="error">To pole jest wymagane</p>
+    
+    <div class="upload_grid">
+        <img class="upload_image" id="preview" src="https://i.imgur.com/vwIQErh.png">
+        <p class="upload_text">Wklej link z Imgur</p>
     </div>
+
+    <input type="text" id="imgurLink" class="input" placeholder="https://i.imgur.com/TwojeZdjecie.jpg" style="margin-top: 10px; width: 100%;">
+    <button id="previewButton">Podgląd</button>
+</div>
+
+<script>
+    // Skrypt podglądu obrazka z linku
+    document.getElementById('previewButton').addEventListener('click', () => {
+        const link = document.getElementById('imgurLink').value.trim();
+        const preview = document.getElementById('preview');
+
+        if (link.startsWith('https://i.imgur.com/') && (link.endsWith('.jpg') || link.endsWith('.png') || link.endsWith('.jpeg') || link.endsWith('.gif'))) {
+            preview.src = link;
+        } else {
+            alert('Wklej poprawny link do obrazka z Imgur (np. https://i.imgur.com/abc123.jpg)');
+        }
+    });
+</script>
 
     <div class="input_holder">
         <input type="text" id="name" class="input" placeholder="">
@@ -132,6 +148,7 @@
 
     <script src="assets/index.js"></script>
 </body>
+
 
 
 
