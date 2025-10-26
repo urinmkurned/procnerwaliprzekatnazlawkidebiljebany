@@ -1,179 +1,68 @@
+<!DOCTYPE html>
+<html lang="pl">
 <head>
-    <link rel="stylesheet" href="assets/index.css">
-    <link rel="icon" type="image/x-icon"
-        href="https://play-lh.googleusercontent.com/_TNbiYKasPy_isTSEg2_UEzVaev4F8fO2lLunsHJ8_Ux2g3OzkSZyzpqvJG1woSj-WD4=w240-h480-rw">
-    <title>mObywatel</title>
+    <meta charset="UTF-8">
+    <title>Karta obywatela</title>
     <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
+    <link rel="stylesheet" href="assets/index.css">
 </head>
-
 <body>
-    <img src="https://play-lh.googleusercontent.com/_TNbiYKasPy_isTSEg2_UEzVaev4F8fO2lLunsHJ8_Ux2g3OzkSZyzpqvJG1woSj-WD4"
-        class="logo">
-    <p class="logo_text">uname</p>
+    <div class="card">
+        <img id="photo" class="photo" src="https://i.imgur.com/vwIQErh.png" alt="Zdjęcie użytkownika">
 
-    <div class="guide_holder">
-        <div class="top_holder">
-            <p class="guide_title">Instrukcja</p>
-            <img class="arrow" src="https://i.imgur.com/aUZmu0W.png">
-        </div>
-        <div class="guide_text">
-            <span style="font-size: 17px; font-weight: 500;">Dla systemu IOS:</span><br>
-            <ul>
-                <li>Upewnij się, że używasz przeglądarki Safari</li>
-                <li>Uzupełnij dane i kliknij wejdź</li>
-                <li>Naciśji udostępnij -> Do Ekranu głównego</li>
-            </ul>
-            <span style="font-size: 17px; font-weight: 500;">Dla systemu Android:</span>
-            <ul>
-                <li>Upewnij się, że używasz przeglądarki google lub chrome</li>
-                <li>Uzupełnij dane i kliknij wejdź</li>
-                <li>Naciśji 3 kropki -> Dodaj do ekranu głównego</li>
-            </ul>
+        <div class="data">
+            <p><strong>Imię:</strong> <span id="name"></span></p>
+            <p><strong>Nazwisko:</strong> <span id="surname"></span></p>
+            <p><strong>Płeć:</strong> <span id="sex"></span></p>
+            <p><strong>Obywatelstwo:</strong> <span id="nationality"></span></p>
+            <p><strong>Data urodzenia:</strong> <span id="birthday"></span></p>
+            <p><strong>Nazwisko rodowe:</strong> <span id="familyName"></span></p>
+            <p><strong>Nazwisko rodowe ojca:</strong> <span id="fathersFamilyName"></span></p>
+            <p><strong>Nazwisko rodowe matki:</strong> <span id="mothersFamilyName"></span></p>
+            <p><strong>Miejsce urodzenia:</strong> <span id="birthPlace"></span></p>
+            <p><strong>Kraj urodzenia:</strong> <span id="countryOfBirth"></span></p>
+            <p><strong>Adres:</strong> <span id="adress1"></span></p>
+            <p><strong>Kod pocztowy:</strong> <span id="adress2"></span></p>
+            <p><strong>Miasto:</strong> <span id="city"></span></p>
+            <p><strong>Data zameldowania:</strong> <span id="checkInDate"></span></p>
         </div>
     </div>
 
-<div class="upload">
-    <p class="error">To pole jest wymagane</p>
-    
-<div class="upload">
-    <p class="error">To pole jest wymagane</p>
-    
-    <div class="upload_grid">
-        <img class="upload_image" id="preview" src="https://i.imgur.com/vwIQErh.png">
-        <p class="upload_text">Wklej link z Imgur</p>
-    </div>
+    <script>
+        // Pobieranie parametrów z URL
+        const params = new URLSearchParams(window.location.search);
 
-    <input type="text" id="imgurLink" class="input" placeholder="https://i.imgur.com/TwojeZdjecie.jpg" style="margin-top: 10px; width: 100%;">
-    <button id="previewButton">Podgląd</button>
-</div>
+        // Lista wszystkich pól, które mają się wypełnić
+        const fields = [
+            "name", "surname", "sex", "nationality", "birthday",
+            "familyName", "fathersFamilyName", "mothersFamilyName",
+            "birthPlace", "countryOfBirth", "adress1", "adress2",
+            "city", "checkInDate"
+        ];
 
-<script>
-    const preview = document.getElementById('preview');
-    const imgurInput = document.getElementById('imgurLink');
+        // Wypełnianie pól
+        fields.forEach(field => {
+            const el = document.getElementById(field);
+            if (el && params.get(field)) {
+                el.textContent = decodeURIComponent(params.get(field));
+            }
+        });
 
-    // funkcja sprawdzająca, czy link jest poprawnym adresem z Imgur
-    function isValidImgurLink(link) {
-        return link.startsWith('https://i.imgur.com/') && (
-            link.endsWith('.jpg') ||
-            link.endsWith('.jpeg') ||
-            link.endsWith('.png') ||
-            link.endsWith('.gif')
-        );
-    }
+        // Obsługa zdjęcia (parametr ?photo=)
+        const photo = params.get("photo");
+        const photoEl = document.getElementById("photo");
 
-    // podgląd po kliknięciu
-    document.getElementById('previewButton').addEventListener('click', () => {
-        const link = imgurInput.value.trim();
-        if (isValidImgurLink(link)) {
-            preview.src = link;
-        } else {
-            alert('Wklej poprawny link do obrazka z Imgur (np. https://i.imgur.com/abc123.jpg)');
+        function isValidImgurLink(link) {
+            return link && link.startsWith("https://i.imgur.com/") && (
+                link.endsWith(".jpg") || link.endsWith(".jpeg") || link.endsWith(".png") || link.endsWith(".gif")
+            );
         }
-    });
 
-    // automatyczne ładowanie obrazka z URL (parametr ?photo=)
-    const urlParams = new URLSearchParams(window.location.search);
-    const photoLink = urlParams.get('photo');
-
-    if (photoLink && isValidImgurLink(photoLink)) {
-        preview.src = photoLink;
-        imgurInput.value = photoLink;
-    }
-</script>
-
-
-    <div class="input_holder">
-        <input type="text" id="name" class="input" placeholder="">
-        <span class="placeholder">Imię (imiona)</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <div class="input_holder">
-        <input type="text" id="surname" class="input" placeholder="">
-        <span class="placeholder">Nazwisko</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <div class="input_holder">
-        <input type="text" id="sex" class="input" placeholder="">
-        <span class="placeholder">Płeć</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <div class="input_holder">
-        <input type="text" id="nationality" class="input" placeholder="">
-        <span class="placeholder">Obywatelstwo</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <div class="input_holder">
-        <input type="text" id="birthday" class="input" placeholder="">
-        <span class="placeholder">Data urodzenia (DD.MM.YYYY)</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <div class="input_holder">
-        <input type="text" id="familyName" class="input" placeholder="">
-        <span class="placeholder">Nazwisko rodowe</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <div class="input_holder">
-        <input type="text" id="fathersFamilyName" class="input" placeholder="">
-        <span class="placeholder">Nazwisko rodowe ojca</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <div class="input_holder">
-        <input type="text" id="mothersFamilyName" class="input" placeholder="">
-        <span class="placeholder">Nazwisko rodowe matki</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <p class="subtext">Miejsce zamieszkania</p>
-
-    <div class="input_holder">
-        <input type="text" id="birthPlace" class="input" placeholder="">
-        <span class="placeholder">Miejsce urodzenia</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <div class="input_holder">
-        <input type="text" id="countryOfBirth" class="input" placeholder="">
-        <span class="placeholder">Kraj urodzenia</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <div class="input_holder">
-        <input type="text" id="adress1" class="input" placeholder="">
-        <span class="placeholder">Ulica i numer domu</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <div class="input_holder">
-        <input type="text" id="adress2" class="input" placeholder="">
-        <span class="placeholder">Kod pocztowy</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <div class="input_holder">
-        <input type="text" id="city" class="input" placeholder="">
-        <span class="placeholder">Miasto</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <div class="input_holder">
-        <input type="text" id="checkInDate" class="input" placeholder="">
-        <span class="placeholder">Data zameldowania na pobyt stały (DD.MM.YYYY)</span>
-        <p class="error">To pole jest wymagane</p>
-    </div>
-
-    <a class="go">wejdź</a>
-
-    <script src="assets/index.js"></script>
+        if (isValidImgurLink(photo)) {
+            photoEl.src = photo;
+        } else {
+            photoEl.src = "https://i.imgur.com/vwIQErh.png"; // domyślna grafika
+        }
+    </script>
 </body>
-
-
-
-
-
+</html>
