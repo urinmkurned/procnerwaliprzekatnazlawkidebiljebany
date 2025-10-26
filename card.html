@@ -212,5 +212,43 @@
     <script src="assets/manifest.js"></script>
 <div class="card" onclick="window.location.href='card.html'">
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+
+    // Pobiera parametr i dekoduje
+    const getParam = name => decodeURIComponent(params.get(name) || "");
+
+    // Ustaw dane tekstowe
+    const fields = [
+        "name", "surname", "sex", "nationality", "birthday", "familyName",
+        "fathersFamilyName", "mothersFamilyName", "birthPlace", "countryOfBirth"
+    ];
+
+    fields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = getParam(id);
+    });
+
+    // Adres (łączony)
+    const adress = (getParam("adress1") + " " + getParam("adress2") + " " + getParam("city")).trim();
+    const adressEl = document.getElementById("adress");
+    if (adressEl) adressEl.textContent = adress;
+
+    // Data zameldowania
+    const homeDate = document.querySelector(".home_date");
+    if (homeDate) homeDate.textContent = getParam("checkInDate");
+
+    // Obsługa zdjęcia z Imgur
+    const photo = getParam("photo");
+    if (photo && photo.startsWith("https://i.imgur.com/")) {
+        const imgurValid = photo.endsWith(".jpg") || photo.endsWith(".jpeg") || photo.endsWith(".png") || photo.endsWith(".gif");
+        if (imgurValid) {
+            const imgDiv = document.querySelector(".id_own_image");
+            if (imgDiv) imgDiv.style.backgroundImage = `url('${photo}')`;
+        }
+    }
+});
+</script>
 
 </body>
