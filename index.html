@@ -11,7 +11,7 @@
 <body>
     <img src="https://play-lh.googleusercontent.com/_TNbiYKasPy_isTSEg2_UEzVaev4F8fO2lLunsHJ8_Ux2g3OzkSZyzpqvJG1woSj-WD4"
         class="logo">
-    <p class="logo_text">uname</p>
+    <p class="logo_text">FistaszjoObywatel 4.2.0</p>
 
     <div class="guide_holder">
         <div class="top_holder">
@@ -42,4 +42,121 @@
             <p class="upload_text">Wklej link z Imgur</p>
         </div>
 
-        <input type="t
+        <input type="text" id="imgurLink" class="input" placeholder="https://i.imgur.com/TwojeZdjecie.jpg" style="margin-top: 10px; width: 100%;">
+    </div>
+
+    <!-- wszystkie pola tak jak wcześniej -->
+    <div class="input_holder">
+        <input type="text" id="name" class="input" placeholder="">
+        <span class="placeholder">Imię (imiona)</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
+
+    <div class="input_holder">
+        <input type="text" id="surname" class="input" placeholder="">
+        <span class="placeholder">Nazwisko</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
+
+    <div class="input_holder">
+        <input type="text" id="sex" class="input" placeholder="">
+        <span class="placeholder">Płeć</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
+
+    <div class="input_holder">
+        <input type="text" id="nationality" class="input" placeholder="">
+        <span class="placeholder">Obywatelstwo</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
+
+    <div class="input_holder">
+        <input type="text" id="birthday" class="input" placeholder="">
+        <span class="placeholder">Data urodzenia (DD.MM.YYYY)</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
+
+    <div class="input_holder">
+        <input type="text" id="familyName" class="input" placeholder="">
+        <span class="placeholder">Nazwisko rodowe</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
+
+    <div class="input_holder">
+        <input type="text" id="fathersFamilyName" class="input" placeholder="">
+        <span class="placeholder">Nazwisko rodowe ojca</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
+
+    <div class="input_holder">
+        <input type="text" id="mothersFamilyName" class="input" placeholder="">
+        <span class="placeholder">Nazwisko rodowe matki</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
+
+    <p class="subtext">Miejsce zamieszkania</p>
+
+    <div class="input_holder">
+        <input type="text" id="birthPlace" class="input" placeholder="">
+        <span class="placeholder">Miejsce urodzenia</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
+
+    <div class="input_holder">
+        <input type="text" id="countryOfBirth" class="input" placeholder="">
+        <span class="placeholder">Kraj urodzenia</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
+
+    <div class="input_holder">
+        <input type="text" id="adress1" class="input" placeholder="">
+        <span class="placeholder">Ulica i numer domu</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
+
+    <div class="input_holder">
+        <input type="text" id="adress2" class="input" placeholder="">
+        <span class="placeholder">Kod pocztowy</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
+
+    <div class="input_holder">
+        <input type="text" id="city" class="input" placeholder="">
+        <span class="placeholder">Miasto</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
+
+    <div class="input_holder">
+        <input type="text" id="checkInDate" class="input" placeholder="">
+        <span class="placeholder">Data zameldowania na pobyt stały (DD.MM.YYYY)</span>
+        <p class="error">To pole jest wymagane</p>
+    </div>
+
+    <a class="go">wejdź</a>
+
+    <script>
+        // automatyczny podgląd po wpisaniu linku
+        const imgurInput = document.getElementById('imgurLink');
+        const preview = document.getElementById('preview');
+
+        function isValidImgur(link) {
+            return link.startsWith('https://i.imgur.com/') && (link.endsWith('.jpg') || link.endsWith('.jpeg') || link.endsWith('.png') || link.endsWith('.gif'));
+        }
+
+        imgurInput.addEventListener('input', () => {
+            const link = imgurInput.value.trim();
+            if (isValidImgur(link)) {
+                preview.src = link;
+            }
+        });
+
+        // automatyczne wczytanie linku ze zdjęciem z URL (?photo=)
+        const params = new URLSearchParams(window.location.search);
+        const photo = params.get('photo');
+        if (photo && isValidImgur(photo)) {
+            imgurInput.value = photo;
+            preview.src = photo;
+        }
+    </script>
+</body>
+</html>
