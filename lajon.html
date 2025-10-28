@@ -6,211 +6,130 @@
 <title>Logowanie</title>
 <link rel="stylesheet" href="assets/index.css">
 <style>
-  :root{
-    --bg1:#0f1724;
-    --bg2:#071129;
-    --neon:#00fff6;
-    --pink:#ff2d95;
-    --accent:#7c5cff;
-  }
-  html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
-  body{
-    background: radial-gradient(1200px 600px at 10% 20%, rgba(124,92,255,0.12), transparent 10%),
-                radial-gradient(900px 400px at 90% 80%, rgba(255,45,149,0.06), transparent 10%),
-                linear-gradient(180deg,var(--bg1),var(--bg2));
-    color:#e6eef8;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-  }
+:root{--bg1:#071022;--neon:#00fff6;--pink:#ff2d95;--accent:#7c5cff}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;color:#e6eef8;background:
+ radial-gradient(900px 420px at 12% 18%, rgba(124,92,255,0.08), transparent 10%),
+ radial-gradient(800px 360px at 88% 82%, rgba(255,45,149,0.05), transparent 10%),
+ linear-gradient(180deg,var(--bg1),#021021);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.blobs{position:fixed;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:0.95}
+.blob{position:absolute;border-radius:50%;filter:blur(64px);transform:translate3d(0,0,0);animation:blobMove 9s infinite ease-in-out alternate}
+.blob.b1{width:560px;height:560px;left:-8%;top:8%;background:linear-gradient(45deg,var(--accent),var(--neon));animation-duration:11s}
+.blob.b2{width:460px;height:460px;right:-6%;bottom:-6%;background:linear-gradient(135deg,var(--pink),rgba(124,92,255,0.72));animation-duration:13s}
+.blob.b3{width:300px;height:300px;left:50%;top:-10%;background:linear-gradient(90deg,#00ffd1, rgba(0,255,214,0.12));animation-duration:10s}
+@keyframes blobMove{0%{transform:translateY(0) scale(1)}50%{transform:translateY(36px) scale(1.08)}100%{transform:translateY(-28px) scale(.95)}}
 
-  .blobs{position:fixed;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:0.9}
-  .blob{
-    position:absolute;border-radius:50%;filter:blur(60px);transform:translate3d(0,0,0);
-    animation:blobMove 8s infinite ease-in-out alternate;
-  }
-  .blob.b1{width:520px;height:520px;left:-10%;top:10%;background:linear-gradient(45deg,var(--accent),var(--neon));animation-duration:10s}
-  .blob.b2{width:420px;height:420px;right:-8%;bottom:0;background:linear-gradient(135deg,var(--pink),rgba(124,92,255,0.7));animation-duration:12s}
-  .blob.b3{width:260px;height:260px;left:50%;top:-6%;background:linear-gradient(90deg,#00ffd1, rgba(0,255,214,0.1));animation-duration:9s}
+.card{width:380px;max-width:94vw;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.02));border-radius:16px;padding:22px;border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(6px);box-shadow:0 10px 48px rgba(2,6,23,0.6);position:relative;z-index:10;overflow:hidden}
 
-  @keyframes blobMove{
-    0%{transform:translateY(0) scale(1)}
-    50%{transform:translateY(30px) scale(1.08)}
-    100%{transform:translateY(-20px) scale(0.95)}
-  }
+.avatar-wrap{display:flex;justify-content:center;margin-top:-80px;margin-bottom:6px}
+.avatar{width:150px;height:150px;border-radius:18px;overflow:hidden;border:3px solid rgba(255,255,255,0.06);box-shadow:0 14px 40px rgba(2,6,23,0.6),0 0 36px rgba(0,255,214,0.06);background-size:cover;background-position:center;transform:rotate(-6deg);transition:transform .5s cubic-bezier(.2,.9,.3,1);animation:avatarFloat 4s ease-in-out infinite}
+.avatar:hover{transform:rotate(0) scale(1.02)}
+@keyframes avatarFloat{0%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-8px) rotate(-3deg)}100%{transform:translateY(0) rotate(-6deg)}}
 
-  .card{
-    width:360px;max-width:92vw;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.02));
-    border:1px solid rgba(255,255,255,0.04);backdrop-filter: blur(6px);
-    padding:22px;border-radius:16px;box-shadow:0 8px 40px rgba(2,6,23,0.6);
-    position:relative;z-index:10;overflow:hidden;
-  }
+.title{font-weight:900;font-size:22px;text-align:center;margin:8px 0 6px;color:var(--neon);text-shadow:0 6px 30px rgba(0,255,246,0.12)}
+.title::before,.title::after{content:"uname";position:absolute;left:0;right:0;top:0;opacity:.55;color:var(--pink);mix-blend-mode:screen;pointer-events:none}
+.title::before{clip-path:polygon(0 0,100% 0,100% 42%,0 42%);transform:translate(2px,-2px);filter:blur(.9px);animation:gl1 2.6s infinite steps(2,end)}
+.title::after{clip-path:polygon(0 58%,100% 58%,100% 100%,0 100%);transform:translate(-2px,2px);color:var(--accent);animation:gl2 3s infinite steps(2,end)}
+@keyframes gl1{0%{transform:translate(2px,-2px)}20%{transform:translate(-3px,0)}40%{transform:translate(4px,-1px)}60%{transform:translate(-2px,2px)}80%{transform:translate(1px,-3px)}100%{transform:translate(2px,-2px)}}
+@keyframes gl2{0%{transform:translate(-2px,2px)}25%{transform:translate(3px,-1px)}50%{transform:translate(-4px,1px)}75%{transform:translate(2px,-2px)}100%{transform:translate(-2px,2px)}}
 
+.form{margin-top:6px}
+.field{position:relative;margin:12px 0}
+.field input{width:100%;padding:13px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);color:#eaf6ff;font-size:14px;outline:none;transition:box-shadow .18s,border-color .18s}
+.field input:focus{box-shadow:0 10px 30px rgba(7,17,38,0.5);border-color:rgba(124,92,255,0.6)}
+.field label{position:absolute;left:14px;top:13px;color:rgba(230,238,248,0.62);font-size:13px;pointer-events:none;transition:all .18s}
+.field input:focus + label,.field input.used + label{transform:translateY(-10px) scale(.88);opacity:0.96;color:var(--neon)}
 
-  .avatar-wrap{display:flex;justify-content:center;margin-top:-70px;margin-bottom:8px}
-  .avatar{
-    width:140px;height:140px;border-radius:20px;overflow:hidden;border:3px solid rgba(255,255,255,0.06);
-    box-shadow:0 10px 30px rgba(2,6,23,0.6),0 0 30px rgba(0,255,214,0.06);
-    transform:rotate(-6deg);transition:transform .6s cubic-bezier(.2,.9,.3,1);
-    background:#111;background-size:cover;background-position:center;
-    animation:avatarFloat 4s ease-in-out infinite;
-  }
-  .avatar:hover{transform:rotate(0) scale(1.02)}
-  @keyframes avatarFloat{0%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-8px) rotate(-3deg)}100%{transform:translateY(0) rotate(-6deg)}}
+.btn{width:100%;padding:12px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--neon),var(--accent));color:#02111a;font-weight:800;font-size:15px;cursor:pointer;margin-top:12px;position:relative;overflow:hidden;box-shadow:0 6px 26px rgba(0,0,0,0.45),0 0 24px rgba(124,92,255,0.12)}
+.btn:active{transform:translateY(1px)}
+.btn::after{content:"";position:absolute;left:-40%;top:-60%;width:180%;height:220%;background:linear-gradient(45deg,rgba(255,255,255,0.12),transparent);transform:rotate(25deg);opacity:0.08;transition:all .6s}
+.btn:hover::after{left:120%;opacity:0.16;transition:all .8s}
 
+.error{color:#ffc6d4;background:linear-gradient(180deg,rgba(255,45,149,0.06),transparent);padding:10px;border-radius:8px;margin-top:10px;font-size:13px;display:none;text-align:center}
 
-  .title{
-    text-align:center;margin:12px 0 6px;font-weight:800;letter-spacing:0.5px;font-size:22px;
-    color:var(--neon);text-shadow:0 0 18px rgba(0,255,246,0.14),0 2px 10px rgba(0,0,0,0.5);
-    position:relative;
-  }
-  .title::after,.title::before{
-    content:"uname";position:absolute;left:0;right:0;
-    top:0;opacity:0.6;color:var(--pink);mix-blend-mode:screen;
-    clip-path:polygon(0 0,100% 0,100% 45%,0 45%);
-    transform:translate(2px,-2px);filter:blur(0.8px);
-    animation:glitchA 2.6s infinite steps(2, end);
-  }
-  .title::before{clip-path:polygon(0 55%,100% 55%,100%100%,0 100%);color:var(--accent);transform:translate(-2px,2px);animation:glitchB 3s infinite steps(2,end)}
-  @keyframes glitchA{
-    0%{transform:translate(2px,-2px)}
-    20%{transform:translate(-3px,0)}
-    40%{transform:translate(4px,-1px)}
-    60%{transform:translate(-2px,2px)}
-    80%{transform:translate(1px,-3px)}
-    100%{transform:translate(2px,-2px)}
-  }
-  @keyframes glitchB{
-    0%{transform:translate(-2px,2px)}
-    25%{transform:translate(3px,-1px)}
-    50%{transform:translate(-4px,1px)}
-    75%{transform:translate(2px,-2px)}
-    100%{transform:translate(-2px,2px)}
-  }
+.scan{position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;opacity:0.06;background-image:linear-gradient(transparent 92%, rgba(0,0,0,0.14) 100%);background-size:100% 6px}
+.particles{position:absolute;inset:0;pointer-events:none;z-index:2}
+.p{position:absolute;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.06);animation:float 6s infinite ease-in-out}
+.p.p1{left:12%;top:8%;animation-delay:-1s}
+.p.p2{left:78%;top:14%;animation-delay:-2s}
+.p.p3{left:40%;top:82%;animation-delay:-3s}
+@keyframes float{0%{transform:translateY(0) scale(1);opacity:1}50%{transform:translateY(-18px) scale(1.2);opacity:.6}100%{transform:translateY(0) scale(1);opacity:1}}
 
-
-  .form{margin-top:6px}
-  .field{position:relative;margin:10px 0}
-  .field input{
-    width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);
-    background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);
-    color:#eaf6ff;font-size:14px;outline:none;transition:box-shadow .18s, border-color .18s;
-  }
-  .field input:focus{box-shadow:0 8px 24px rgba(7,17,38,0.5);border-color:rgba(124,92,255,0.55)}
-  .field label{
-    position:absolute;left:14px;top:13px;color:rgba(230,238,248,0.6);font-size:13px;pointer-events:none;transition:all .18s;
-  }
-  .field input:focus + label, .field input.used + label{
-    transform:translateY(-10px) scale(.88);opacity:0.95;color:var(--neon);
-  }
-
-
-  .btn{
-    width:100%;padding:12px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--neon),var(--accent));
-    color:#02111a;font-weight:700;font-size:15px;cursor:pointer;margin-top:12px;position:relative;overflow:hidden;
-    box-shadow:0 6px 20px rgba(0,0,0,0.5),0 0 24px rgba(124,92,255,0.12);
-  }
-  .btn:active{transform:translateY(1px)}
-  .btn::after{
-    content:"";position:absolute;left:-40%;top:-60%;width:180%;height:220%;background:linear-gradient(45deg,rgba(255,255,255,0.12),transparent);
-    transform:rotate(25deg);opacity:0.1;transition:all .6s;
-  }
-  .btn:hover::after{left:120%;opacity:0.16;transition:all .8s}
-
-  .error{color:#ffb4c6;background:linear-gradient(180deg,rgba(255,45,149,0.06),transparent);padding:8px;border-radius:8px;margin-top:10px;font-size:13px;display:none;text-align:center}
-
-
-  .scan{
-    position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;opacity:0.06;background-image:linear-gradient(transparent 92%, rgba(0,0,0,0.14) 100%);
-    background-size:100% 6px;
-  }
-
-
-  .particles{position:absolute;inset:0;pointer-events:none;z-index:2}
-  .p{position:absolute;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.06);animation:float 6s infinite ease-in-out}
-  .p.p1{left:12%;top:8%;animation-delay:-1s}
-  .p.p2{left:78%;top:14%;animation-delay:-2s}
-  .p.p3{left:40%;top:82%;animation-delay:-3s}
-  @keyframes float{0%{transform:translateY(0) scale(1);opacity:1}50%{transform:translateY(-18px) scale(1.2);opacity:0.6}100%{transform:translateY(0) scale(1);opacity:1}}
-
-  @media (max-width:420px){
-    .avatar{width:110px;height:110px;border-radius:16px}
-    .card{padding:18px;border-radius:12px}
-    .title{font-size:18px}
-  }
+@media (max-width:420px){.avatar{width:110px;height:110px;border-radius:16px}.card{padding:18px;border-radius:12px}.title{font-size:18px}}
 </style>
 </head>
 <body>
-  <div class="blobs" aria-hidden="true">
-    <div class="blob b1"></div>
-    <div class="blob b2"></div>
-    <div class="blob b3"></div>
-  </div>
+<div class="blobs" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="particles" aria-hidden="true"><div class="p p1"></div><div class="p p2"></div><div class="p p3"></div></div>
 
-  <div class="particles" aria-hidden="true">
-    <div class="p p1"></div><div class="p p2"></div><div class="p p3"></div>
-  </div>
+<div class="card" role="main" aria-labelledby="hTitle">
+  <div class="avatar-wrap"><div class="avatar" id="avatar" style="background-image:url('https://i.imgur.com/TNFS46w.jpeg');"></div></div>
+  <div class="title" id="hTitle">uname</div>
 
-  <div class="card" role="main" aria-labelledby="hTitle">
-    <div class="avatar-wrap">
-      <div class="avatar" id="avatar" style="background-image:url('https://i.imgur.com/TNFS46w.jpeg');"></div>
+  <form class="form" onsubmit="return false" autocomplete="off" aria-label="formularz logowania">
+    <div class="field">
+      <input id="username" type="text" autocomplete="off" />
+      <label for="username">Nazwa użytkownika</label>
+    </div>
+    <div class="field">
+      <input id="password" type="password" autocomplete="new-password" />
+      <label for="password">Hasło</label>
     </div>
 
-    <div class="title" id="hTitle">uname</div>
+    <button class="btn" id="loginBtn" aria-label="Zaloguj się">Zaloguj się</button>
+    <div id="error" class="error" role="alert">Nieprawidłowy login lub hasło</div>
+  </form>
 
-    <form class="form" onsubmit="return false" autocomplete="off" aria-label="formularz logowania">
-      <div class="field">
-        <input id="username" type="text" autocomplete="off" />
-        <label for="username">Nazwa użytkownika</label>
-      </div>
-      <div class="field">
-        <input id="password" type="password" autocomplete="new-password" />
-        <label for="password">Hasło</label>
-      </div>
-
-      <button class="btn" id="loginBtn">Zaloguj się</button>
-
-      <div id="error" class="error" role="alert">Nieprawidłowy login lub hasło</div>
-    </form>
-
-    <div class="scan" aria-hidden="true"></div>
-  </div>
+  <div class="scan" aria-hidden="true"></div>
+</div>
 
 <script>
-const _a=["WY=","VtZ","hbW","dW5"],_b=["YQ==","bWlu","YWFk","bWVm"];
-function _d(x){const j=x.slice().reverse().join('');try{const r=atob(j);return decodeURIComponent(r.split('').map(c=>'%'+c.charCodeAt(0).toString(16).padStart(2,'0')).join(''))}catch{return''}}
-const expectedUser=_d(_a),expectedPass=_d(_b);
+const uparts = ["h","V","W","b","Z","Y","t","d","=","W","W","5"];
+const uorder = [7,2,11,0,3,9,1,6,4,10,5,8];
+const pparts = ["Y","V","W","F","Y","b","Q","b","m","u","l","k","W","=","W","="];
+const porder = [5,12,1,8,0,14,3,11,7,2,10,9,4,6,13,15];
 
-function markUsed(el){if(el.value.trim()!=='') el.classList.add('used'); else el.classList.remove('used')}
+function reconstruct(parts, order){
+  let s = "";
+  for(let i=0;i<order.length;i++) s += parts[order[i]];
+  try{
+    const raw = atob(s);
+    const pct = raw.split('').map(c=>'%'+c.charCodeAt(0).toString(16).padStart(2,'0')).join('');
+    return decodeURIComponent(pct);
+  }catch(e){return ''}
+}
 
+const expectedUser = reconstruct(uparts,uorder);
+const expectedPass = reconstruct(pparts,porder);
+
+function markUsed(el){ if(el.value.trim()!=='') el.classList.add('used'); else el.classList.remove('used') }
 document.querySelectorAll('.field input').forEach(i=>{
   i.addEventListener('input',()=>markUsed(i));
   i.addEventListener('blur',()=>markUsed(i));
   markUsed(i);
 });
 
-const av=document.getElementById('avatar');
+const av = document.getElementById('avatar');
 av.addEventListener('mousemove',e=>{
-  const r=av.getBoundingClientRect();
-  const dx=(e.clientX - (r.left + r.width/2))/r.width;
-  const dy=(e.clientY - (r.top + r.height/2))/r.height;
-  av.style.transform=`rotate(${dx*6}deg) translateY(${dy*-6}px)`;
+  const r = av.getBoundingClientRect();
+  const dx = (e.clientX - (r.left + r.width/2))/r.width;
+  const dy = (e.clientY - (r.top + r.height/2))/r.height;
+  av.style.transform = `rotate(${dx*6}deg) translateY(${dy*-6}px)`;
 });
 av.addEventListener('mouseleave',()=>av.style.transform='rotate(-6deg)');
 
-const loginBtn=document.getElementById('loginBtn');
-const err=document.getElementById('error');
+const loginBtn = document.getElementById('loginBtn');
+const err = document.getElementById('error');
 
 loginBtn.addEventListener('click',()=>{
   err.style.display='none';
-  const u=document.getElementById('username').value.trim();
-  const p=document.getElementById('password').value.trim();
-  if(!u||!p){err.textContent='Wypełnij wszystkie pola';err.style.display='block';return}
+  const u = document.getElementById('username').value.trim();
+  const p = document.getElementById('password').value.trim();
+  if(!u||!p){ err.textContent='Wypełnij wszystkie pola'; err.style.display='block'; return }
   if(u===expectedUser && p===expectedPass){
     localStorage.setItem('loggedIn','true');
     window.location.href='index.html';
-  } else { err.textContent='Nieprawidłowy login lub hasło'; err.style.display='block'; }
+  } else { err.textContent='Nieprawidłowy login lub hasło'; err.style.display='block' }
 });
 </script>
 </body>
