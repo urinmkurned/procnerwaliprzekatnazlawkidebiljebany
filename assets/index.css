@@ -5,10 +5,10 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(120deg, #1e1e2f, #2c2c44);
+    background: linear-gradient(135deg, #1e1e2f, #2c2c44, #3a3a5a, #1e1e2f);
     background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
-    color: #ffffff;
+    animation: gradientShift 20s ease infinite;
+    color: #fff;
     transition: background 0.3s ease;
 }
 
@@ -18,23 +18,18 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-
-.container {
-    max-width: 400px;
-    margin: auto;
-    padding: 20px;
-}
-
-
 .logo {
     display: block;
     margin: 30px auto 10px;
     width: 120px;
-    transition: transform 0.3s ease;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .logo:hover {
     transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(0,0,0,0.6);
 }
 
 .logo_text {
@@ -44,17 +39,18 @@ body {
     margin-bottom: 30px;
     letter-spacing: 0.5px;
     color: #00ff9f;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
 }
 
-
 .guide_holder {
-    margin: 15px 0;
+    margin: 15px 20px;
     background: rgba(255, 255, 255, 0.05);
     padding: 15px;
-    border-radius: 12px;
-    backdrop-filter: blur(6px);
+    border-radius: 14px;
+    backdrop-filter: blur(8px);
     cursor: pointer;
     transition: 0.3s;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
 .guide_holder.unfolded {
@@ -62,66 +58,69 @@ body {
 }
 
 .guide_title {
-    font-weight: bold;
-    margin-bottom: 10px;
+    font-weight: 600;
     font-size: 18px;
+    margin-bottom: 10px;
 }
 
 .guide_text ul {
     padding-left: 20px;
+    margin: 8px 0;
 }
 
-.guide_text strong {
+.guide_text span {
     display: block;
     margin-top: 10px;
+    font-weight: 500;
     font-size: 16px;
 }
 
-
 .input_holder {
     position: relative;
-    margin: 15px 0;
+    margin: 15px 20px;
 }
 
 .input_holder input {
     width: 100%;
-    padding: 12px 14px;
-    border-radius: 10px;
+    padding: 14px 16px;
+    border-radius: 12px;
     border: none;
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
     font-size: 15px;
     transition: 0.3s;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .input_holder input:focus {
     background: rgba(255,255,255,0.2);
     outline: none;
+    box-shadow: 0 0 10px rgba(0,255,159,0.6);
 }
 
 .input_holder .placeholder {
     position: absolute;
     top: 50%;
-    left: 14px;
+    left: 16px;
     transform: translateY(-50%);
     color: #ccc;
     pointer-events: none;
     font-size: 14px;
 }
 
-
 .upload {
-    margin: 15px 0;
-    padding: 12px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
+    margin: 15px 20px;
+    padding: 14px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 14px;
     backdrop-filter: blur(6px);
     cursor: pointer;
     transition: 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 .upload:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255,255,255,0.12);
 }
 
 .upload_grid {
@@ -135,39 +134,40 @@ body {
     width: 60px;
     height: 60px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 2px solid #00ff9f;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .upload_image:hover {
     transform: scale(1.1);
+    box-shadow: 0 0 10px #00ff9f;
 }
 
 .upload_text {
     font-size: 14px;
 }
 
-
 .go {
     display: block;
-    width: 150px;
+    width: 160px;
     margin: 25px auto;
     text-align: center;
-    padding: 12px 20px;
+    padding: 14px 0;
     background: #00ff9f;
     color: #000;
-    border-radius: 10px;
-    font-weight: bold;
+    border-radius: 12px;
+    font-weight: 700;
     cursor: pointer;
     text-decoration: none;
     transition: 0.3s;
+    box-shadow: 0 4px 12px rgba(0,255,159,0.5);
 }
 
 .go:hover {
     background: #00e68a;
+    box-shadow: 0 6px 18px rgba(0,230,138,0.6);
 }
-
 
 #userModal {
     display: none;
@@ -182,21 +182,23 @@ body {
 
 .modal_content {
     background: #1e1e2f;
-    padding: 20px;
-    border-radius: 12px;
-    width: 320px;
+    padding: 22px;
+    border-radius: 14px;
+    width: 340px;
     text-align: center;
     position: relative;
     color: white;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
 }
 
 .modal_content input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin-top: 10px;
-    border-radius: 8px;
+    border-radius: 10px;
     border: none;
+    background: rgba(255,255,255,0.1);
+    color: white;
 }
 
 #modalError {
@@ -208,9 +210,9 @@ body {
 
 .modal_content button {
     margin-top: 12px;
-    padding: 10px 16px;
+    padding: 12px 18px;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     background: #00ff9f;
     color: #000;
     font-weight: 600;
@@ -225,20 +227,19 @@ body {
 #closeModal {
     position: absolute;
     top: 10px;
-    right: 12px;
+    right: 14px;
     background: transparent;
     border: none;
     color: white;
-    font-size: 20px;
+    font-size: 22px;
     cursor: pointer;
 }
 
-
 .logoutBtn, .checkUserBtn {
     position: fixed;
-    padding: 10px 16px;
+    padding: 10px 18px;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     font-weight: 600;
     z-index: 9999;
@@ -246,10 +247,11 @@ body {
 }
 
 .logoutBtn {
-    top: 15px;
-    right: 15px;
+    top: 18px;
+    right: 18px;
     background: #ff4d4d;
     color: white;
+    box-shadow: 0 4px 12px rgba(255,77,77,0.5);
 }
 
 .logoutBtn:hover {
@@ -257,10 +259,11 @@ body {
 }
 
 .checkUserBtn {
-    bottom: 15px;
-    right: 15px;
+    bottom: 18px;
+    right: 18px;
     background: #007bff;
     color: white;
+    box-shadow: 0 4px 12px rgba(0,123,255,0.5);
 }
 
 .checkUserBtn:hover {
