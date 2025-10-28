@@ -84,6 +84,7 @@ html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe U
 </div>
 
 <script>
+
 const uparts = ["h","V","W","b","Z","Y","t","d","=","W","W","5"];
 const uorder = [7,2,11,0,3,9,1,6,4,10,5,8];
 const pparts = ["Y","V","W","F","Y","b","Q","b","m","u","l","k","W","=","W","="];
@@ -96,13 +97,13 @@ function reconstruct(parts, order){
     const raw = atob(s);
     const pct = raw.split('').map(c=>'%'+c.charCodeAt(0).toString(16).padStart(2,'0')).join('');
     return decodeURIComponent(pct);
-  }catch(e){return ''}
+  }catch(e){return '';}
 }
 
 const expectedUser = reconstruct(uparts,uorder);
 const expectedPass = reconstruct(pparts,porder);
 
-function markUsed(el){ if(el.value.trim()!=='') el.classList.add('used'); else el.classList.remove('used') }
+function markUsed(el){ if(el.value.trim()!=='') el.classList.add('used'); else el.classList.remove('used'); }
 document.querySelectorAll('.field input').forEach(i=>{
   i.addEventListener('input',()=>markUsed(i));
   i.addEventListener('blur',()=>markUsed(i));
@@ -110,7 +111,7 @@ document.querySelectorAll('.field input').forEach(i=>{
 });
 
 const av = document.getElementById('avatar');
-av.addEventListener('mousemove',e=>{
+av.addEventListener('mousemove', e=>{
   const r = av.getBoundingClientRect();
   const dx = (e.clientX - (r.left + r.width/2))/r.width;
   const dy = (e.clientY - (r.top + r.height/2))/r.height;
@@ -121,16 +122,41 @@ av.addEventListener('mouseleave',()=>av.style.transform='rotate(-6deg)');
 const loginBtn = document.getElementById('loginBtn');
 const err = document.getElementById('error');
 
-loginBtn.addEventListener('click',()=>{
+
+async function fetchUserIP() {
+    try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        return data.ip;
+    } catch(e) {
+        console.error("Nie udało się pobrać IP:", e);
+        return null;
+    }
+}
+
+
+loginBtn.addEventListener('click', async ()=>{
   err.style.display='none';
   const u = document.getElementById('username').value.trim();
   const p = document.getElementById('password').value.trim();
-  if(!u||!p){ err.textContent='Wypełnij wszystkie pola'; err.style.display='block'; return }
+  const ip = await fetchUserIP();
+
+  if(!u || !p){ 
+    err.textContent='Wypełnij wszystkie pola'; 
+    err.style.display='block'; 
+    return; 
+  }
   if(u===expectedUser && p===expectedPass){
     localStorage.setItem('loggedIn','true');
+    localStorage.setItem('userIP', ip);
+    console.log("Zalogowano z IP:", ip);
     window.location.href='index.html';
-  } else { err.textContent='Nieprawidłowy login lub hasło'; err.style.display='block' }
+  } else { 
+    err.textContent='Nieprawidłowy login lub hasło'; 
+    err.style.display='block'; 
+  }
 });
 </script>
 </body>
 </html>
+
