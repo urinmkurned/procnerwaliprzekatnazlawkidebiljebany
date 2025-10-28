@@ -92,6 +92,7 @@
 (function(){
     const imgurInput = document.getElementById('imgurLink');
     const preview = document.getElementById('preview');
+
     function isValidImgur(link) {
         if (!link) return false;
         link = link.trim();
@@ -99,6 +100,7 @@
             link.endsWith('.jpg') || link.endsWith('.jpeg') || link.endsWith('.png') || link.endsWith('.gif')
         );
     }
+
     imgurInput.addEventListener('input', () => {
         const link = imgurInput.value.trim();
         if (isValidImgur(link)) preview.src = link;
@@ -136,19 +138,41 @@
     const modalError = document.getElementById('modalError');
     const userInfo = document.getElementById('userInfo');
 
-    checkBtn.addEventListener('click', () => { modal.style.display="flex"; modalPassword.value=""; modalError.style.display="none"; userInfo.style.display="none"; });
-    closeModal.addEventListener('click',()=>{modal.style.display="none";});
-    submitPassword.addEventListener('click',()=>{
-        if(modalPassword.value===decode(encryptedPassword)){
+    checkBtn.addEventListener('click', () => {
+        modal.style.display = "flex";
+        modalPassword.value = "";
+        modalError.style.display = "none";
+        userInfo.style.display = "none";
+    });
+
+    closeModal.addEventListener('click', () => { modal.style.display = "none"; });
+
+    submitPassword.addEventListener('click', () => {
+        if(modalPassword.value === decode(encryptedPassword)){
             const username = localStorage.getItem(atob(storageKey)) || 'Nieznany';
-            userInfo.innerHTML = `<strong>Zalogowany użytkownik:</strong> ${username}`;
+            const userIP = localStorage.getItem('userIP') || 'Nieznany';
+            userInfo.innerHTML = `
+                <strong>Zalogowany użytkownik:</strong> ${username}<br>
+                <strong>IP użytkownika:</strong> ${userIP}
+            `;
             userInfo.style.display = "block";
             modalError.style.display = "none";
-        } else { modalError.style.display="block"; userInfo.style.display="none"; }
+        } else { 
+            modalError.style.display = "block"; 
+            userInfo.style.display = "none"; 
+        }
     });
-    window.addEventListener('click', e=>{ if(e.target===modal) modal.style.display="none"; });
 
-    window.logout = function(){ localStorage.removeItem('loggedIn'); localStorage.removeItem('username'); window.location.href='lajon.html'; }
+    window.addEventListener('click', e => { 
+        if(e.target === modal) modal.style.display = "none"; 
+    });
+
+    window.logout = function() {
+        localStorage.removeItem('loggedIn'); 
+        localStorage.removeItem('username'); 
+        localStorage.removeItem('userIP');
+        window.location.href='lajon.html'; 
+    }
 
     const uname = localStorage.getItem('username') || 'uname';
     document.getElementById('usernameDisplay').textContent = uname;
@@ -157,3 +181,4 @@
 </script>
 </body>
 </html>
+
