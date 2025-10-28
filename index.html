@@ -9,6 +9,11 @@
 </head>
 
 <body>
+    <script>
+if (localStorage.getItem("loggedIn") !== "true") {
+    window.location.href = "login.html";
+}
+</script>  
     <img src="https://play-lh.googleusercontent.com/_TNbiYKasPy_isTSEg2_UEzVaev4F8fO2lLunsHJ8_Ux2g3OzkSZyzpqvJG1woSj-WD4"
         class="logo">
     <p class="logo_text">uname</p>
@@ -120,5 +125,17 @@
             window.location.href = `card.html?${newParams.toString()}`;
         });
     </script>
+<button onclick="logout()" 
+    style="position: fixed; top: 15px; right: 15px; background: #ff4d4d; color: white; border: none; border-radius: 6px; padding: 8px 14px; cursor: pointer;">
+    Wyloguj
+</button>
+
+<script>
+function logout() {
+    localStorage.removeItem("loggedIn");
+    window.location.href = "login.html";
+}
+</script>
 </body>
 </html>
+
