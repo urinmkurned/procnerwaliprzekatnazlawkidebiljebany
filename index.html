@@ -9,6 +9,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
 </head>
 <body>
+<img src="https://i.imgur.com/vwIQErh.png" alt="Logo" class="logo">
+<div class="logo_text">Formularz Rejestracji</div>
+
+<div class="input_holder">
+    <input type="text" placeholder="Imię i nazwisko">
+</div>
+
+<div class="input_holder">
+    <input type="text" placeholder="Adres zamieszkania">
+</div>
+
+<div class="input_holder">
+    <input type="text" placeholder="Kod pocztowy">
+</div>
+
+<div class="input_holder">
+    <input type="email" placeholder="Email">
+</div>
+
+<div class="input_holder">
+    <input type="tel" placeholder="Telefon">
+</div>
+
+<div class="upload">
+    <span class="upload_text">Dodaj zdjęcie:</span>
+    <div class="upload_grid">
+        <img src="https://i.imgur.com/vwIQErh.png" alt="Preview" class="upload_image" id="preview">
+    </div>
+</div>
+
+<a href="#" class="go">Wyślij</a>
+
+<button class="logoutBtn" onclick="alert('Wylogowano')">Wyloguj</button>
+<button class="checkUserBtn" onclick="alert('Sprawdzenie użytkownika')">Sprawdź użytkownika</button>
 
 <script>
     if (localStorage.getItem("loggedIn") !== "true") {
@@ -181,3 +215,4 @@
 
 </body>
 </html>
+
