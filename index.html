@@ -178,7 +178,13 @@
     document.getElementById('usernameDisplay').textContent = uname;
 
 })();
+
+    <button onclick="logout()" style="position: fixed; top: 15px; right: 15px; background: #ff4d4d; color: white; border: none; border-radius: 6px; padding: 8px 14px; cursor: pointer; z-index:9999;">Wyloguj</button>
+<script>
+function logout(){ localStorage.removeItem('loggedIn'); window.location.href='login.html' }
+</script>
 </script>
 </body>
 </html>
+
 
