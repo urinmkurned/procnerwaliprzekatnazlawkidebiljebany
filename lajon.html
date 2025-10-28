@@ -135,28 +135,34 @@ async function fetchUserIP() {
 }
 
 
-loginBtn.addEventListener('click', async ()=>{
-  err.style.display='none';
+loginBtn.addEventListener('click', async ()=> {
+  err.style.display = 'none';
   const u = document.getElementById('username').value.trim();
   const p = document.getElementById('password').value.trim();
-  const ip = await fetchUserIP();
 
-  if(!u || !p){ 
-    err.textContent='Wypełnij wszystkie pola'; 
-    err.style.display='block'; 
-    return; 
+  if (!u || !p) {
+    err.textContent = 'Wypełnij wszystkie pola';
+    err.style.display = 'block';
+    return;
   }
-  if(u===expectedUser && p===expectedPass){
-    localStorage.setItem('loggedIn','true');
-    localStorage.setItem('userIP', ip);
-    console.log("Zalogowano z IP:", ip);
-    window.location.href='index.html';
-  } else { 
-    err.textContent='Nieprawidłowy login lub hasło'; 
-    err.style.display='block'; 
+
+  if (u === expectedUser && p === expectedPass) {
+
+    localStorage.setItem('loggedIn', 'true');
+    localStorage.setItem('username', u);
+
+    let ip = await fetchUserIP();
+    if(ip) localStorage.setItem('userIP', ip);
+
+    console.log("Zalogowano:", u, "z IP:", ip);
+    window.location.href = 'index.html'; 
+  } else {
+    err.textContent = 'Nieprawidłowy login lub hasło';
+    err.style.display = 'block';
   }
 });
 </script>
 </body>
 </html>
+
 
