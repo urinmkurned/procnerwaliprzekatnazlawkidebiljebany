@@ -1,4 +1,20 @@
 const upload = document.querySelector('.upload');
+const loadButton = document.getElementById('loadImage');
+const imageUrlInput = document.getElementById('imageUrl');
+const previewImage = document.getElementById('previewImage');
+
+loadButton.addEventListener('click', () => {
+    const url = imageUrlInput.value.trim();
+    if(url) {
+        previewImage.src = url;
+        upload.classList.add('upload_loaded');
+        upload.setAttribute('selected', url);
+        upload.classList.remove('error_shown');
+    } else {
+        alert('Wklej poprawny link do obrazka!');
+    }
+});
+
 const imageInput = document.createElement('input');
 
 imageInput.type = 'file';
@@ -117,4 +133,5 @@ document.querySelector('.go').addEventListener('click', () => {
   window.location.href = `home.html?${params}`;
   window.location.href = `card.html?${params}`;
 });
+
 
