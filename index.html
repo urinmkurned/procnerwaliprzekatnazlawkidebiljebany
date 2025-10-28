@@ -50,7 +50,6 @@ if (localStorage.getItem("loggedIn") !== "true") {
         <input type="text" id="imgurLink" class="input" placeholder="https://i.imgur.com/TwojeZdjecie.jpg" style="margin-top: 10px; width: 100%;">
     </div>
 
-    <!-- Pola formularza -->
     <div class="input_holder"><input type="text" id="name" class="input"><span class="placeholder">Imię (imiona)</span></div>
     <div class="input_holder"><input type="text" id="surname" class="input"><span class="placeholder">Nazwisko</span></div>
     <div class="input_holder"><input type="text" id="sex" class="input"><span class="placeholder">Płeć</span></div>
@@ -85,25 +84,22 @@ if (localStorage.getItem("loggedIn") !== "true") {
             );
         }
 
-        // podgląd na żywo przy wpisywaniu
         imgurInput.addEventListener('input', () => {
             const link = imgurInput.value.trim();
             if (isValidImgur(link)) preview.src = link;
         });
 
-        // automatyczne wczytanie ?photo=
         const params = new URLSearchParams(window.location.search);
         let photo = params.get('photo');
 
         if (photo) {
-            photo = decodeURIComponent(photo); // 🔥 kluczowa poprawka
+            photo = decodeURIComponent(photo);
             if (isValidImgur(photo)) {
                 imgurInput.value = photo;
                 preview.src = photo;
             }
         }
 
-        // po kliknięciu "wejdź"
         goBtn.addEventListener('click', () => {
             const fields = [
                 "name", "surname", "sex", "nationality", "birthday",
@@ -125,18 +121,12 @@ if (localStorage.getItem("loggedIn") !== "true") {
             window.location.href = `card.html?${newParams.toString()}`;
         });
     </script>
-<button onclick="logout()" 
-    style="position: fixed; top: 15px; right: 15px; background: #ff4d4d; color: white; border: none; border-radius: 6px; padding: 8px 14px; cursor: pointer;">
-    Wyloguj
-</button>
-
+<button onclick="logout()" style="position: fixed; top: 15px; right: 15px; background: #ff4d4d; color: white; border: none; border-radius: 6px; padding: 8px 14px; cursor: pointer; z-index:9999;">Wyloguj</button>
 <script>
-function logout() {
-    localStorage.removeItem("loggedIn");
-    window.location.href = "lajon.html";
-}
+function logout(){ localStorage.removeItem('loggedIn'); window.location.href='lajon.html' }
 </script>
 </body>
 </html>
+
 
 
