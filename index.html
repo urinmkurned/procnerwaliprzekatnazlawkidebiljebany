@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>mObywatel</title>
+    <title>uname</title>
     <link rel="stylesheet" href="assets/index.css">
     <link rel="icon" type="image/x-icon"
         href="https://play-lh.googleusercontent.com/_TNbiYKasPy_isTSEg2_UEzVaev4F8fO2lunsHJ8_Ux2g3OzkSZyzpqvJG1woSj-WD4=w240-h480-rw">
@@ -12,73 +12,10 @@
 <img src="https://i.imgur.com/vwIQErh.png" alt="Logo" class="logo">
 <div class="logo_text">Formularz Rejestracji</div>
 
-<div class="input_holder">
-    <input type="text" placeholder="Imię i nazwisko">
-</div>
-
-<div class="input_holder">
-    <input type="text" placeholder="Adres zamieszkania">
-</div>
-
-<div class="input_holder">
-    <input type="text" placeholder="Kod pocztowy">
-</div>
-
-<div class="input_holder">
-    <input type="email" placeholder="Email">
-</div>
-
-<div class="input_holder">
-    <input type="tel" placeholder="Telefon">
-</div>
-
 <div class="upload">
     <span class="upload_text">Dodaj zdjęcie:</span>
     <div class="upload_grid">
         <img src="https://i.imgur.com/vwIQErh.png" alt="Preview" class="upload_image" id="preview">
-    </div>
-</div>
-
-<a href="#" class="go">Wyślij</a>
-
-<button class="logoutBtn" onclick="alert('Wylogowano')">Wyloguj</button>
-<button class="checkUserBtn" onclick="alert('Sprawdzenie użytkownika')">Sprawdź użytkownika</button>
-
-<script>
-    if (localStorage.getItem("loggedIn") !== "true") {
-        window.location.href = "lajon.html";
-    }
-</script>  
-
-<img src="https://play-lh.googleusercontent.com/_TNbiYKasPy_isTSEg2_UEzVaev4F8fO2lunsHJ8_Ux2g3OzkSZyzpqvJG1woSj-WD4" class="logo">
-<p class="logo_text" id="usernameDisplay">uname</p>
-
-<div class="guide_holder">
-    <div class="top_holder">
-        <p class="guide_title">Instrukcja</p>
-        <img class="arrow" src="https://i.imgur.com/aUZmu0W.png">
-    </div>
-    <div class="guide_text">
-        <span style="font-size:17px;font-weight:500;">Dla systemu IOS:</span><br>
-        <ul>
-            <li>Upewnij się, że używasz przeglądarki Safari</li>
-            <li>Uzupełnij dane i kliknij wejdź</li>
-            <li>Naciśnij „Udostępnij” → „Do ekranu głównego”</li>
-        </ul>
-        <span style="font-size:17px;font-weight:500;">Dla systemu Android:</span>
-        <ul>
-            <li>Upewnij się, że używasz przeglądarki Google Chrome</li>
-            <li>Uzupełnij dane i kliknij wejdź</li>
-            <li>Naciśnij 3 kropki → „Dodaj do ekranu głównego”</li>
-        </ul>
-    </div>
-</div>
-
-<div class="upload">
-    <p class="error">To pole jest wymagane</p>
-    <div class="upload_grid">
-        <img class="upload_image" id="preview" src="https://i.imgur.com/vwIQErh.png">
-        <p class="upload_text">Wklej link z Imgur</p>
     </div>
     <input type="text" id="imgurLink" class="input" placeholder="https://i.imgur.com/TwojeZdjecie.jpg" style="margin-top:10px;">
 </div>
@@ -120,6 +57,10 @@
 
 <script>
 (function(){
+    if (localStorage.getItem("loggedIn") !== "true") {
+        window.location.href = "lajon.html";
+    }
+
     // Podgląd obrazka
     const imgurInput = document.getElementById('imgurLink');
     const preview = document.getElementById('preview');
@@ -208,11 +149,11 @@
     }
 
     const uname = localStorage.getItem('username') || 'uname';
-    document.getElementById('usernameDisplay').textContent = uname;
+    const usernameDisplay = document.getElementById('usernameDisplay');
+    if(usernameDisplay) usernameDisplay.textContent = uname;
 
 })();
 </script>
 
 </body>
 </html>
-
