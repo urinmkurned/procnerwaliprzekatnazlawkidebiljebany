@@ -68,7 +68,6 @@
 <div class="input_holder"><input type="text" id="sex" class="input"><span class="placeholder">Płeć</span></div>
 <div class="input_holder"><input type="text" id="nationality" class="input"><span class="placeholder">Obywatelstwo</span></div>
 <div class="input_holder"><input type="text" id="birthday" class="input"><span class="placeholder">Data urodzenia (DD.MM.YYYY)</span></div>
-
 <div class="input_holder"><input type="text" id="birthPlace" class="input"><span class="placeholder">Miejsce urodzenia</span></div>
 <div class="input_holder"><input type="text" id="countryOfBirth" class="input"><span class="placeholder">Kraj urodzenia</span></div>
 
@@ -178,13 +177,7 @@
     document.getElementById('usernameDisplay').textContent = uname;
 
 })();
+</script>
 
-    <button onclick="logout()" style="position: fixed; top: 15px; right: 15px; background: #ff4d4d; color: white; border: none; border-radius: 6px; padding: 8px 14px; cursor: pointer; z-index:9999;">Wyloguj</button>
-<script>
-function logout(){ localStorage.removeItem('loggedIn'); window.location.href='login.html' }
-</script>
-</script>
 </body>
 </html>
-
-
