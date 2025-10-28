@@ -225,8 +225,55 @@ function logout(){ localStorage.removeItem('loggedIn'); window.location.href='la
     <div id="userInfo" style="margin-top: 15px; display:none; font-size:14px;"></div>
   </div>
 </div>
+<script>
+function decode(str) {
+    return atob(str);
+}
+
+const encryptedPassword = "bWVmYWFkbWluYQ=="; 
+const storageKey = btoa("username"); 
+
+const checkBtn = document.getElementById('checkUserBtn');
+const modal = document.getElementById('userModal');
+const closeModal = document.getElementById('closeModal');
+const submitPassword = document.getElementById('submitPassword');
+const modalPassword = document.getElementById('modalPassword');
+const modalError = document.getElementById('modalError');
+const userInfo = document.getElementById('userInfo');
+
+checkBtn.addEventListener('click', () => {
+    modal.style.display = "flex";
+    modalPassword.value = "";
+    modalError.style.display = "none";
+    userInfo.style.display = "none";
+});
+
+closeModal.addEventListener('click', () => {
+    modal.style.display = "none";
+});
+
+submitPassword.addEventListener('click', () => {
+    const val = modalPassword.value;
+    if(val === decode(encryptedPassword)) {
+        const username = localStorage.getItem(atob(storageKey)) || 'Nieznany';
+        userInfo.innerHTML = `<strong>Zalogowany użytkownik:</strong> ${username}`;
+        userInfo.style.display = "block";
+        modalError.style.display = "none";
+    } else {
+        modalError.style.display = "block";
+        userInfo.style.display = "none";
+    }
+});
+
+window.addEventListener('click', (e) => {
+    if(e.target === modal) modal.style.display = "none";
+});
+</script>
+
+
 </body>
 </html>
+
 
 
 
