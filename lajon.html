@@ -1,33 +1,217 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Logowanie</title>
-    <link rel="stylesheet" href="assets/index.css">
-    <style>
-        body{display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-family:Arial,Helvetica,sans-serif;background:#f5f7fb}
-        .login-box{background:#fff;padding:28px;border-radius:12px;box-shadow:0 6px 18px rgba(17,24,39,.08);width:340px;text-align:center}
-        input{width:100%;padding:11px;margin:8px 0;border:1px solid #e3e7ef;border-radius:8px;font-size:14px}
-        button{width:100%;padding:11px;margin-top:12px;border-radius:8px;border:0;background:#007aff;color:#fff;font-weight:600;cursor:pointer}
-        .error{color:#c62828;font-size:13px;display:none;margin-top:8px}
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Logowanie</title>
+<link rel="stylesheet" href="assets/index.css">
+<style>
+  :root{
+    --bg1:#0f1724;
+    --bg2:#071129;
+    --neon:#00fff6;
+    --pink:#ff2d95;
+    --accent:#7c5cff;
+  }
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+  body{
+    background: radial-gradient(1200px 600px at 10% 20%, rgba(124,92,255,0.12), transparent 10%),
+                radial-gradient(900px 400px at 90% 80%, rgba(255,45,149,0.06), transparent 10%),
+                linear-gradient(180deg,var(--bg1),var(--bg2));
+    color:#e6eef8;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+
+  .blobs{position:fixed;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:0.9}
+  .blob{
+    position:absolute;border-radius:50%;filter:blur(60px);transform:translate3d(0,0,0);
+    animation:blobMove 8s infinite ease-in-out alternate;
+  }
+  .blob.b1{width:520px;height:520px;left:-10%;top:10%;background:linear-gradient(45deg,var(--accent),var(--neon));animation-duration:10s}
+  .blob.b2{width:420px;height:420px;right:-8%;bottom:0;background:linear-gradient(135deg,var(--pink),rgba(124,92,255,0.7));animation-duration:12s}
+  .blob.b3{width:260px;height:260px;left:50%;top:-6%;background:linear-gradient(90deg,#00ffd1, rgba(0,255,214,0.1));animation-duration:9s}
+
+  @keyframes blobMove{
+    0%{transform:translateY(0) scale(1)}
+    50%{transform:translateY(30px) scale(1.08)}
+    100%{transform:translateY(-20px) scale(0.95)}
+  }
+
+  .card{
+    width:360px;max-width:92vw;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.02));
+    border:1px solid rgba(255,255,255,0.04);backdrop-filter: blur(6px);
+    padding:22px;border-radius:16px;box-shadow:0 8px 40px rgba(2,6,23,0.6);
+    position:relative;z-index:10;overflow:hidden;
+  }
+
+
+  .avatar-wrap{display:flex;justify-content:center;margin-top:-70px;margin-bottom:8px}
+  .avatar{
+    width:140px;height:140px;border-radius:20px;overflow:hidden;border:3px solid rgba(255,255,255,0.06);
+    box-shadow:0 10px 30px rgba(2,6,23,0.6),0 0 30px rgba(0,255,214,0.06);
+    transform:rotate(-6deg);transition:transform .6s cubic-bezier(.2,.9,.3,1);
+    background:#111;background-size:cover;background-position:center;
+    animation:avatarFloat 4s ease-in-out infinite;
+  }
+  .avatar:hover{transform:rotate(0) scale(1.02)}
+  @keyframes avatarFloat{0%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-8px) rotate(-3deg)}100%{transform:translateY(0) rotate(-6deg)}}
+
+
+  .title{
+    text-align:center;margin:12px 0 6px;font-weight:800;letter-spacing:0.5px;font-size:22px;
+    color:var(--neon);text-shadow:0 0 18px rgba(0,255,246,0.14),0 2px 10px rgba(0,0,0,0.5);
+    position:relative;
+  }
+  .title::after,.title::before{
+    content:"uname";position:absolute;left:0;right:0;
+    top:0;opacity:0.6;color:var(--pink);mix-blend-mode:screen;
+    clip-path:polygon(0 0,100% 0,100% 45%,0 45%);
+    transform:translate(2px,-2px);filter:blur(0.8px);
+    animation:glitchA 2.6s infinite steps(2, end);
+  }
+  .title::before{clip-path:polygon(0 55%,100% 55%,100%100%,0 100%);color:var(--accent);transform:translate(-2px,2px);animation:glitchB 3s infinite steps(2,end)}
+  @keyframes glitchA{
+    0%{transform:translate(2px,-2px)}
+    20%{transform:translate(-3px,0)}
+    40%{transform:translate(4px,-1px)}
+    60%{transform:translate(-2px,2px)}
+    80%{transform:translate(1px,-3px)}
+    100%{transform:translate(2px,-2px)}
+  }
+  @keyframes glitchB{
+    0%{transform:translate(-2px,2px)}
+    25%{transform:translate(3px,-1px)}
+    50%{transform:translate(-4px,1px)}
+    75%{transform:translate(2px,-2px)}
+    100%{transform:translate(-2px,2px)}
+  }
+
+
+  .form{margin-top:6px}
+  .field{position:relative;margin:10px 0}
+  .field input{
+    width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);
+    background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);
+    color:#eaf6ff;font-size:14px;outline:none;transition:box-shadow .18s, border-color .18s;
+  }
+  .field input:focus{box-shadow:0 8px 24px rgba(7,17,38,0.5);border-color:rgba(124,92,255,0.55)}
+  .field label{
+    position:absolute;left:14px;top:13px;color:rgba(230,238,248,0.6);font-size:13px;pointer-events:none;transition:all .18s;
+  }
+  .field input:focus + label, .field input.used + label{
+    transform:translateY(-10px) scale(.88);opacity:0.95;color:var(--neon);
+  }
+
+
+  .btn{
+    width:100%;padding:12px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--neon),var(--accent));
+    color:#02111a;font-weight:700;font-size:15px;cursor:pointer;margin-top:12px;position:relative;overflow:hidden;
+    box-shadow:0 6px 20px rgba(0,0,0,0.5),0 0 24px rgba(124,92,255,0.12);
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn::after{
+    content:"";position:absolute;left:-40%;top:-60%;width:180%;height:220%;background:linear-gradient(45deg,rgba(255,255,255,0.12),transparent);
+    transform:rotate(25deg);opacity:0.1;transition:all .6s;
+  }
+  .btn:hover::after{left:120%;opacity:0.16;transition:all .8s}
+
+  .error{color:#ffb4c6;background:linear-gradient(180deg,rgba(255,45,149,0.06),transparent);padding:8px;border-radius:8px;margin-top:10px;font-size:13px;display:none;text-align:center}
+
+
+  .scan{
+    position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;opacity:0.06;background-image:linear-gradient(transparent 92%, rgba(0,0,0,0.14) 100%);
+    background-size:100% 6px;
+  }
+
+
+  .particles{position:absolute;inset:0;pointer-events:none;z-index:2}
+  .p{position:absolute;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.06);animation:float 6s infinite ease-in-out}
+  .p.p1{left:12%;top:8%;animation-delay:-1s}
+  .p.p2{left:78%;top:14%;animation-delay:-2s}
+  .p.p3{left:40%;top:82%;animation-delay:-3s}
+  @keyframes float{0%{transform:translateY(0) scale(1);opacity:1}50%{transform:translateY(-18px) scale(1.2);opacity:0.6}100%{transform:translateY(0) scale(1);opacity:1}}
+
+  @media (max-width:420px){
+    .avatar{width:110px;height:110px;border-radius:16px}
+    .card{padding:18px;border-radius:12px}
+    .title{font-size:18px}
+  }
+</style>
 </head>
 <body>
-    <div class="login-box">
-        <h2 style="margin:0 0 10px 0">Logowanie</h2>
-        <input id="username" type="text" placeholder="Nazwa użytkownika" autocomplete="off">
-        <input id="password" type="password" placeholder="Hasło" autocomplete="off">
-        <button id="loginBtn">Zaloguj się</button>
-        <p id="error" class="error">Nieprawidłowy login lub hasło</p>
+  <div class="blobs" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
+  <div class="particles" aria-hidden="true">
+    <div class="p p1"></div><div class="p p2"></div><div class="p p3"></div>
+  </div>
+
+  <div class="card" role="main" aria-labelledby="hTitle">
+    <div class="avatar-wrap">
+      <div class="avatar" id="avatar" style="background-image:url('https://i.imgur.com/TNFS46w.jpeg');"></div>
     </div>
 
+    <div class="title" id="hTitle">uname</div>
+
+    <form class="form" onsubmit="return false" autocomplete="off" aria-label="formularz logowania">
+      <div class="field">
+        <input id="username" type="text" autocomplete="off" />
+        <label for="username">Nazwa użytkownika</label>
+      </div>
+      <div class="field">
+        <input id="password" type="password" autocomplete="new-password" />
+        <label for="password">Hasło</label>
+      </div>
+
+      <button class="btn" id="loginBtn">Zaloguj się</button>
+
+      <div id="error" class="error" role="alert">Nieprawidłowy login lub hasło</div>
+    </form>
+
+    <div class="scan" aria-hidden="true"></div>
+  </div>
+
 <script>
-const a=["WY=","VtZ","hbW","dW5"];
-const b=["YQ==","bWlu","YWFk","bWVm"];
-function c(d){const e=d.slice().reverse().join('');try{const f=atob(e);return decodeURIComponent(f.split('').map(g=>'%'+g.charCodeAt(0).toString(16).padStart(2,'0')).join(''))}catch{return''}}
-const h=c(a),i=c(b),j=document.getElementById('loginBtn'),k=document.getElementById('error');
-j.addEventListener('click',()=>{k.style.display='none';const l=document.getElementById('username').value.trim(),m=document.getElementById('password').value.trim();if(!l||!m){k.textContent='Wypełnij wszystkie pola';k.style.display='block';return}if(l===h&&m===i){localStorage.setItem('loggedIn','true');window.location.href='index.html'}else{k.textContent='Nieprawidłowy login lub hasło';k.style.display='block'}})
+const _a=["WY=","VtZ","hbW","dW5"],_b=["YQ==","bWlu","YWFk","bWVm"];
+function _d(x){const j=x.slice().reverse().join('');try{const r=atob(j);return decodeURIComponent(r.split('').map(c=>'%'+c.charCodeAt(0).toString(16).padStart(2,'0')).join(''))}catch{return''}}
+const expectedUser=_d(_a),expectedPass=_d(_b);
+
+function markUsed(el){if(el.value.trim()!=='') el.classList.add('used'); else el.classList.remove('used')}
+
+document.querySelectorAll('.field input').forEach(i=>{
+  i.addEventListener('input',()=>markUsed(i));
+  i.addEventListener('blur',()=>markUsed(i));
+  markUsed(i);
+});
+
+const av=document.getElementById('avatar');
+av.addEventListener('mousemove',e=>{
+  const r=av.getBoundingClientRect();
+  const dx=(e.clientX - (r.left + r.width/2))/r.width;
+  const dy=(e.clientY - (r.top + r.height/2))/r.height;
+  av.style.transform=`rotate(${dx*6}deg) translateY(${dy*-6}px)`;
+});
+av.addEventListener('mouseleave',()=>av.style.transform='rotate(-6deg)');
+
+const loginBtn=document.getElementById('loginBtn');
+const err=document.getElementById('error');
+
+loginBtn.addEventListener('click',()=>{
+  err.style.display='none';
+  const u=document.getElementById('username').value.trim();
+  const p=document.getElementById('password').value.trim();
+  if(!u||!p){err.textContent='Wypełnij wszystkie pola';err.style.display='block';return}
+  if(u===expectedUser && p===expectedPass){
+    localStorage.setItem('loggedIn','true');
+    window.location.href='index.html';
+  } else { err.textContent='Nieprawidłowy login lub hasło'; err.style.display='block'; }
+});
 </script>
 </body>
 </html>
