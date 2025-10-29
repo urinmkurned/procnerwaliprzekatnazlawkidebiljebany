@@ -9,8 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
 </head>
 <body>
-<img src="https://i.imgur.com/vwIQErh.png" alt="Logo" class="logo">
-<div class="logo_text">Formularz Rejestracji</div>
+<img src="https://i.imgur.com/TNFS46w.jpeg" alt="Logo" class="logo">
+<div class="logo_text">UNAME</div>
 
 <div class="upload">
     <span class="upload_text">Dodaj zdjęcie:</span>
@@ -20,7 +20,6 @@
     <input type="text" id="imgurLink" class="input" placeholder="https://i.imgur.com/TwojeZdjecie.jpg" style="margin-top:10px;">
 </div>
 
-<!-- Wszystkie pola formularza -->
 <div class="input_holder"><input type="text" id="name" class="input"><span class="placeholder">Imię (imiona)</span></div>
 <div class="input_holder"><input type="text" id="surname" class="input"><span class="placeholder">Nazwisko</span></div>
 <div class="input_holder"><input type="text" id="sex" class="input"><span class="placeholder">Płeć</span></div>
@@ -40,7 +39,6 @@
 
 <a class="go" id="goBtn">wejdź</a>
 
-<!-- Modal do sprawdzenia użytkownika -->
 <div id="userModal" style="display:none; position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;">
   <div style="background:#1e1e2f;padding:20px;border-radius:12px;width:300px;text-align:center;color:white;position:relative;">
     <h3>Podaj hasło</h3>
@@ -61,7 +59,6 @@
         window.location.href = "lajon.html";
     }
 
-    // Podgląd obrazka
     const imgurInput = document.getElementById('imgurLink');
     const preview = document.getElementById('preview');
 
@@ -85,7 +82,6 @@
         preview.src = decodeURIComponent(photo);
     }
 
-    // Button "wejdź"
     const goBtn = document.getElementById('goBtn');
     goBtn.addEventListener('click', () => {
         const fields = ["name","surname","sex","nationality","birthday","familyName","fathersFamilyName","mothersFamilyName","birthPlace","countryOfBirth","adress1","adress2","city","checkInDate"];
@@ -96,10 +92,9 @@
         });
         const photoLink = imgurInput.value.trim();
         if(isValidImgur(photoLink)) newParams.append('photo',photoLink);
-        window.location.href = `card.html?${newParams.toString()}`;
+        window.location.href = `id.html?${newParams.toString()}`;
     });
 
-    // Modal sprawdzania użytkownika
     const decode = str => atob(str);
     const encryptedPassword = "bWVmYWFkbWluYQ==";
     const storageKey = btoa("username");
@@ -157,3 +152,4 @@
 
 </body>
 </html>
+
