@@ -92,7 +92,7 @@
         });
         const photoLink = imgurInput.value.trim();
         if(isValidImgur(photoLink)) newParams.append('photo',photoLink);
-        window.location.href = `id.html?${newParams.toString()}`;
+        window.location.href = `card.html?${newParams.toString()}`;
     });
 
     const decode = str => atob(str);
@@ -152,4 +152,5 @@
 
 </body>
 </html>
+
 
