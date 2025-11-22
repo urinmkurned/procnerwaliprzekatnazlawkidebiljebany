@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Discord Login</title>
+</head>
+<body>
+  <h1>Zaloguj się Discordem</h1>
+
+  <a id="loginBtn">
+    <button>Zaloguj</button>
+  </a>
+
+  <script>
+    const CLIENT_ID = "1441765327036743802";
+    const REDIRECT_URI = "https://twoj-login.github.io/auth.html"; 
+    const SCOPE = "identify";
+
+    document.getElementById("loginBtn").href =
+      `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=${SCOPE}`;
+  </script>
+</body>
+</html>
